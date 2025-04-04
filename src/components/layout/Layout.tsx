@@ -113,9 +113,19 @@ const Layout: React.FC = () => {
   const [previousPathname, setPreviousPathname] = useState<string>(location.pathname);
   const [nextPathname, setNextPathname] = useState<string>('');
   const [transitionColor, setTransitionColor] = useState<string>('#6A5ACD');
+  const [currentContent, setCurrentContent] = useState<string>(location.pathname);
+  
+  // Fix for empty page: Ensure we always show a valid page
+  useEffect(() => {
+    if (!isTransitioning) {
+      setCurrentContent(location.pathname);
+    }
+  }, [location.pathname, isTransitioning]);
   
   // Handle navigation with transition overlay
   const handleNavigation = (to: string) => {
+    if (to === location.pathname || isTransitioning) return;
+    
     const currentIndex = pages.findIndex(page => page.path === location.pathname);
     const nextIndex = pages.findIndex(page => page.path === to);
     
@@ -146,19 +156,20 @@ const Layout: React.FC = () => {
 
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, [location.pathname]);
+  }, [location.pathname, isTransitioning]);
 
   // Complete transition after overlay animation
   useEffect(() => {
     if (isTransitioning && nextPathname) {
+      // Keep the current content visible until navigation completes
       const timer = setTimeout(() => {
         navigate(nextPathname);
         setTimeout(() => {
           setIsTransitioning(false);
           setPreviousPathname(nextPathname);
           setNextPathname('');
-        }, 100); // Brief delay to ensure overlay exits after content loads
-      }, 300); // Timing coordinated with overlay animation
+        }, 200); // Longer delay to ensure overlay fully exits after content loads
+      }, 350); // Better timing coordinated with overlay animation
       
       return () => clearTimeout(timer);
     }
@@ -187,8 +198,8 @@ const Layout: React.FC = () => {
   return (
     <div className="flex justify-center items-start min-h-screen bg-background text-text-primary py-20 px-32"> 
       <div className="flex w-full max-w-full"> 
-        {/* Wider nav column with more spacing */} 
-        <nav className="w-72 flex-shrink-0 flex flex-col items-end pr-24 pt-8 space-y-5 sticky top-20 h-[calc(100vh-10rem)]"> 
+        {/* Nav column with reduced spacing to main content */} 
+        <nav className="w-72 flex-shrink-0 flex flex-col items-end pr-14 pt-8 space-y-5 sticky top-20 h-[calc(100vh-10rem)]"> 
           <div className="flex-grow w-full space-y-4">
             <StyledNavLink to="/">Home</StyledNavLink>
             <StyledNavLink to="/projects">Projects</StyledNavLink>
@@ -204,8 +215,8 @@ const Layout: React.FC = () => {
           </button>
         </nav>
 
-        {/* Main content with increased width */}
-        <main className="flex-1 relative overflow-hidden"> 
+        {/* Main content with improved shadow and rounded corners */}
+        <main className="flex-1 relative overflow-hidden rounded-xl shadow-2xl"> 
           {/* Page transition overlay */}
           <AnimatePresence initial={false} custom={direction}>
             {isTransitioning && (
@@ -228,12 +239,12 @@ const Layout: React.FC = () => {
           {/* Page content with AnimatePresence */}
           <AnimatePresence initial={false} mode="wait">
             <motion.div
-              key={location.pathname}
+              key={currentContent}
               variants={pageTransitionVariants}
               initial="initial"
               animate="animate"
               exit="exit"
-              className="absolute inset-0 bg-card rounded-xl shadow-lg p-12 origin-center"
+              className="absolute inset-0 bg-card rounded-xl shadow-xl p-12 origin-center"
               style={{ minHeight: 'calc(100vh - 10rem)' }}
             >
               <motion.div className="h-full">
