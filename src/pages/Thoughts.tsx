@@ -54,9 +54,19 @@ const getArticleClasses = (size: string) => {
   }
 };
 
+// Context type for type checking
+interface ContextType {
+  childVariants: Variants;
+  HeadingStyles: {
+    h1: string;
+    h2: string;
+    subtitle: string;
+  };
+}
+
 const Thoughts: React.FC = () => {
-  // Get animation variants from layout context
-  const childVariants = useOutletContext<Variants>();
+  // Get animation variants and heading styles from layout context
+  const { childVariants, HeadingStyles } = useOutletContext<ContextType>();
 
   return (
     <motion.div
@@ -66,8 +76,8 @@ const Thoughts: React.FC = () => {
       exit="exit"
       className="flex flex-col h-full"
     >
-      <h1 className="text-4xl font-bold text-text-primary mb-8">Thoughts</h1>
-      <p className="text-lg text-text-secondary mb-10 max-w-3xl">
+      <h1 className={HeadingStyles.h1}>Thoughts</h1>
+      <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
         A collection of essays and reflections on technology, design, and the digital landscape.
       </p>
       
@@ -88,8 +98,8 @@ const Thoughts: React.FC = () => {
               // Regular thought content
               <div className="p-6 bg-background">
                 <div className="flex justify-between items-baseline mb-4">
-                  <h2 className="text-2xl font-semibold text-text-primary">
-                    <a href={`#thought-${thought.id}`} className="hover:text-accent-secondary transition-colors">
+                  <h2 className="text-xl font-semibold text-text-primary hover:text-accent-secondary transition-colors">
+                    <a href={`#thought-${thought.id}`}>
                       {thought.title}
                     </a>
                   </h2>

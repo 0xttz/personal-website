@@ -65,9 +65,19 @@ const getTileClasses = (size: string) => {
   }
 };
 
+// Context type for type checking
+interface ContextType {
+  childVariants: Variants;
+  HeadingStyles: {
+    h1: string;
+    h2: string;
+    subtitle: string;
+  };
+}
+
 const Projects: React.FC = () => {
-  // Get animation variants from layout context
-  const childVariants = useOutletContext<Variants>();
+  // Get animation variants and heading styles from layout context
+  const { childVariants, HeadingStyles } = useOutletContext<ContextType>();
   
   return (
     <motion.div 
@@ -77,8 +87,8 @@ const Projects: React.FC = () => {
       exit="exit"
       className="flex flex-col h-full"
     >
-      <h1 className="text-4xl font-bold text-text-primary mb-8">Projects</h1>
-      <p className="text-lg text-text-secondary mb-10 max-w-3xl">
+      <h1 className={HeadingStyles.h1}>Projects</h1>
+      <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
         A selection of projects I've built, exploring various technologies and design approaches.
       </p>
       
@@ -105,8 +115,8 @@ const Projects: React.FC = () => {
                   <p className="text-text-primary/50 italic">[ Project Visual ]</p>
                 </div>
                 <div className="p-6 flex flex-col flex-grow bg-background">
-                  <h2 className="text-xl font-semibold text-text-primary mb-3">
-                    <a href={project.link} className="hover:text-accent-secondary transition-colors">
+                  <h2 className="text-xl font-semibold text-text-primary mb-2 hover:text-accent-secondary transition-colors">
+                    <a href={project.link}>
                       {project.title}
                     </a>
                   </h2>
@@ -126,8 +136,8 @@ const Projects: React.FC = () => {
             ) : (
               // Regular project tile
               <div className="h-full p-6 flex flex-col bg-background">
-                <h2 className="text-xl font-semibold text-text-primary mb-3">
-                  <a href={project.link} className="hover:text-accent-secondary transition-colors">
+                <h2 className="text-xl font-semibold text-text-primary mb-2 hover:text-accent-secondary transition-colors">
+                  <a href={project.link}>
                     {project.title}
                   </a>
                 </h2>

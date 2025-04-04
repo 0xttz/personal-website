@@ -74,6 +74,16 @@ const getTypeColors = (type: string) => {
   }
 };
 
+// Context type for type checking
+interface ContextType {
+  childVariants: Variants;
+  HeadingStyles: {
+    h1: string;
+    h2: string;
+    subtitle: string;
+  };
+}
+
 const RecommendationItem: React.FC<typeof recommendationsData[0]> = ({ type, title, link, note, size, visualOnly }) => (
   <div className={`h-full rounded-lg overflow-hidden ${visualOnly ? '' : 'border border-accent-primary/20 bg-background'}`}>
     {visualOnly ? (
@@ -91,8 +101,8 @@ const RecommendationItem: React.FC<typeof recommendationsData[0]> = ({ type, tit
           <span className={`text-xs uppercase tracking-wider font-medium mb-2 inline-block px-2 py-1 rounded bg-gradient-to-r ${getTypeColors(type)} bg-opacity-50`}>
             {type}
           </span>
-          <h3 className="text-lg font-semibold text-text-primary mt-1 mb-2">
-            <a href={link} target="_blank" rel="noopener noreferrer" className="hover:text-accent-secondary transition-colors">
+          <h3 className="text-lg font-semibold text-text-primary mt-1 mb-2 hover:text-accent-secondary transition-colors">
+            <a href={link} target="_blank" rel="noopener noreferrer">
               {title}
             </a>
           </h3>
@@ -104,8 +114,8 @@ const RecommendationItem: React.FC<typeof recommendationsData[0]> = ({ type, tit
 );
 
 const Recommendations: React.FC = () => {
-  // Get animation variants from layout context
-  const childVariants = useOutletContext<Variants>();
+  // Get animation variants and heading styles from layout context
+  const { childVariants, HeadingStyles } = useOutletContext<ContextType>();
 
   return (
     <motion.div
@@ -115,8 +125,8 @@ const Recommendations: React.FC = () => {
       exit="exit"
       className="flex flex-col h-full"
     >
-      <h1 className="text-4xl font-bold text-text-primary mb-8">Recommendations</h1>
-      <p className="text-lg text-text-secondary mb-10 max-w-3xl">
+      <h1 className={HeadingStyles.h1}>Recommendations</h1>
+      <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
         Resources, books, videos, and tools that I've found valuable and worth sharing.
       </p>
       
