@@ -365,52 +365,41 @@ const ThoughtDetail: React.FC = () => {
         </button>
       </div>
 
-      {/* Header image */}
+      {/* Header image with improved gradient overlay */}
       <div className={`w-full h-72 md:h-96 bg-gradient-to-r ${GradientStyles.intense} flex items-center justify-center relative overflow-hidden`}>
-        <div className="absolute inset-0 bg-black/20 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/5 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10"></div>
         <div className="text-white/30 italic text-xl z-10">[ Header Image - {thought.heroImage} ]</div>
         
         {/* Title overlay at bottom of image */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 z-20">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 max-w-4xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 max-w-5xl mx-auto">
             {thought.title}
           </h1>
         </div>
       </div>
 
-      {/* Article metadata */}
-      <div className="max-w-3xl mx-auto px-6 py-8">
-        <div className="flex flex-wrap items-center text-text-secondary mb-8 gap-x-6 gap-y-2">
+      {/* Article metadata and content - wider layout */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Simplified metadata with tags next to date */}
+        <div className="flex flex-wrap justify-between items-center text-text-secondary mb-8">
           <div className="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <span>{thought.date}</span>
           </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{thought.readTime}</span>
+          
+          <div className="flex flex-wrap gap-2">
+            {thought.tags.map(tag => (
+              <span
+                key={tag}
+                className="text-sm bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span>{thought.author}</span>
-          </div>
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {thought.tags.map(tag => (
-            <span
-              key={tag}
-              className="text-sm bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
         </div>
 
         {/* Article summary */}
@@ -425,35 +414,11 @@ const ThoughtDetail: React.FC = () => {
           {thought.content.map(renderContent)}
         </article>
 
-        {/* Article footer */}
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row md:justify-between gap-y-6">
-          <div>
-            <h3 className="text-lg font-medium mb-2">Share this article</h3>
-            <div className="flex gap-4">
-              <button className="text-text-secondary hover:text-accent-primary transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                </svg>
-              </button>
-              <button className="text-text-secondary hover:text-accent-primary transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect x="2" y="9" width="4" height="12"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-              </button>
-              <button className="text-text-secondary hover:text-accent-primary transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
+        {/* Article footer - removed share buttons */}
+        <div className="mt-16 pt-8 border-t border-border flex justify-end">
           <button 
             onClick={() => navigate('/thoughts')}
-            className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary transition-colors self-start"
+            className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary transition-colors"
           >
             Back to Thoughts
           </button>
