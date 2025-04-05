@@ -36,9 +36,16 @@ const Home: React.FC = () => {
 
   return (
     // Container to allow flex layout within the card
-    <div className="flex flex-col justify-between min-h-[calc(100vh-13rem)] text-text-primary"> 
+    <motion.div 
+      className="flex flex-col justify-between min-h-[calc(100vh-13rem)] text-text-primary"
+      variants={childVariants}
+      initial="initial" 
+      animate="animate" 
+      exit="exit"
+      layoutId="page-content" // Ensure layout stability
+    > 
       {/* Top section: Intro Text */}
-      <motion.div variants={childVariants} initial="initial" animate="animate" exit="exit">
+      <motion.div variants={childVariants} initial={false}>
         <h1 className={HeadingStyles.h1}>Lennard Kaye</h1>
         <p className={`mt-6 ${HeadingStyles.subtitle}`}>
           Tech-focused Business graduate based in Copenhagen, building full-stack applications and exploring the intersection of AI, data, and user experience. Currently seeking opportunities starting [Your Graduation Month] 2024.
@@ -48,10 +55,9 @@ const Home: React.FC = () => {
       {/* Middle Section: Empty placeholder for future image */}
       <motion.div 
         variants={childVariants}
-        initial="initial" 
-        animate="animate" 
-        exit="exit"
-        className={`my-10 h-80 bg-gradient-to-br ${GradientStyles.primary} rounded-lg overflow-hidden shadow-md`}
+        initial={false}
+        className={`my-10 h-80 bg-gradient-to-br ${GradientStyles.primary} rounded-lg overflow-hidden shadow-md transition-all duration-500`}
+        style={{ willChange: 'transform, opacity' }}
       >
         <div className="w-full h-full flex items-center justify-center">
           <p className="text-text-secondary/70 italic">[ Desert Architecture Image Placeholder ]</p>
@@ -61,10 +67,9 @@ const Home: React.FC = () => {
       {/* Bottom Section: Status Card with social icons */}
       <motion.div 
         variants={childVariants}
-        initial="initial" 
-        animate="animate" 
-        exit="exit" 
-        className={`bg-gradient-to-br ${GradientStyles.secondary} rounded-lg p-6 shadow-md`}
+        initial={false}
+        className={`bg-gradient-to-br ${GradientStyles.secondary} rounded-lg p-6 shadow-md transition-all duration-500`}
+        style={{ willChange: 'transform, opacity' }}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex-grow">
@@ -75,7 +80,7 @@ const Home: React.FC = () => {
           </div>
           
           {/* Social icons in a grid */}
-          <div className="flex flex-wrap gap-4 justify-end">
+          <div className="flex flex-wrap gap-6 justify-end">
             {socialLinks.map((social, index) => (
               <motion.a
                 key={social.label}
@@ -83,19 +88,28 @@ const Home: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative"
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0 }}
                 animate={{ 
-                  opacity: 1, 
-                  y: 0,
+                  opacity: 1,
                   transition: { delay: 0.1 + (index * 0.05) }
                 }}
+                style={{ willChange: 'transform' }}
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-full flex items-center justify-center shadow-md text-white transition-all duration-300 group-hover:shadow-lg">
-                  {social.icon}
+                {/* Icon with gradient on hover */}
+                <div className="relative flex items-center justify-center">
+                  {/* Background subtle glow for contrast */}
+                  <div className="absolute inset-0 rounded-full w-9 h-9 -m-2 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                  
+                  {/* The actual icon */}
+                  <div className="relative z-10 transition-all duration-300 text-white/80 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary">
+                    {social.icon}
+                  </div>
                 </div>
-                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                
+                {/* Label tooltip */}
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                   {social.label}
                 </span>
               </motion.a>
@@ -103,7 +117,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 

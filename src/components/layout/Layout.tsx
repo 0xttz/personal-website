@@ -9,11 +9,11 @@ const SocialBar = () => {
   return (
     <div className="absolute -left-14 top-1/3 flex flex-col gap-6 z-40">
       {[
-        { icon: <FaGithub size={22} />, url: "https://github.com/lennardkaye", label: "GitHub" },
-        { icon: <FaLinkedin size={22} />, url: "https://linkedin.com/in/lennardkaye", label: "LinkedIn" },
-        { icon: <FaTwitter size={22} />, url: "https://x.com/lennardkaye", label: "Twitter" },
-        { icon: <SiLichess size={22} />, url: "https://lichess.org/@/lennardk", label: "Lichess" },
-        { icon: <SiGoodreads size={22} />, url: "https://www.goodreads.com/user/show/158337367-lennard", label: "Goodreads" }
+        { icon: <FaGithub size={30} />, url: "https://github.com/lennardkaye", label: "GitHub" },
+        { icon: <FaLinkedin size={30} />, url: "https://linkedin.com/in/lennardkaye", label: "LinkedIn" },
+        { icon: <FaTwitter size={30} />, url: "https://x.com/lennardkaye", label: "Twitter" },
+        { icon: <SiLichess size={30} />, url: "https://lichess.org/@/lennardk", label: "Lichess" },
+        { icon: <SiGoodreads size={30} />, url: "https://www.goodreads.com/user/show/158337367-lennard", label: "Goodreads" }
       ].map((social, index) => (
         <motion.a
           key={social.label}
@@ -24,12 +24,18 @@ const SocialBar = () => {
           initial={{ x: -30 }}
           animate={{ x: 0 }}
           transition={{ delay: 0.1 * index, duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          whileHover={{ scale: 1.1, x: 5 }}
+          whileHover={{ x: 5, scale: 1.2 }}
         >
-          <div className="w-12 h-12 bg-gradient-to-br from-accent-primary/20 to-accent-secondary/30 flex items-center justify-center rounded-full shadow-md z-10 text-text-secondary group-hover:text-accent-secondary transition-colors duration-300">
-            {social.icon}
+          {/* Icon with gradient effect */}
+          <div className="flex items-center justify-center relative">
+            {/* Icon with gradient on hover */}
+            <div className="relative z-10 transition-all duration-300 text-text-secondary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary">
+              {social.icon}
+            </div>
           </div>
-          <div className="absolute left-8 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 rounded-r-full pl-4 pr-3 py-2 -z-10 opacity-0 transform -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-md whitespace-nowrap">
+          
+          {/* Label that appears on hover */}
+          <div className="absolute left-6 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 backdrop-blur-sm rounded-r-full pl-5 pr-3 py-2 -z-10 opacity-0 transform -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-sm whitespace-nowrap">
             <span className="text-sm font-medium text-text-primary">{social.label}</span>
           </div>
         </motion.a>
@@ -135,6 +141,14 @@ export const GradientStyles = {
   card: "from-white/40 to-white/80"
 };
 
+// Page navigation order - used for determining animation direction
+export const NAV_ORDER = [
+  { path: '/', name: 'Me', order: 1 },
+  { path: '/projects', name: 'Projects', order: 2 },
+  { path: '/thoughts', name: 'Thoughts', order: 3 },
+  { path: '/recommendations', name: 'Recommendations', order: 4 }
+];
+
 // Page transition configuration
 interface PageConfig {
   path: string;
@@ -158,20 +172,22 @@ const pageTransitionVariants: Variants = {
     transition: {
       duration: 0.3,
       when: "beforeChildren",
-      staggerChildren: 0.1
+      staggerChildren: 0.1,
+      ease: "easeOut"
     }
   },
   exit: {
     opacity: 0,
     transition: {
-      duration: 0.2
+      duration: 0.2,
+      ease: "easeIn"
     }
   }
 };
 
 // Child element animation for staggered entry
 const childVariants: Variants = {
-  initial: { opacity: 0, y: 20, filter: 'blur(5px)' },
+  initial: { opacity: 0, y: 0, filter: 'blur(5px)' },
   animate: { 
     opacity: 1, 
     y: 0, 
@@ -226,6 +242,12 @@ const Layout: React.FC = () => {
   const [currentContent, setCurrentContent] = useState<string>(location.pathname);
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   
+  // Helper to get page order number
+  const getPageOrder = (path: string): number => {
+    const page = NAV_ORDER.find(p => p.path === path);
+    return page ? page.order : 0;
+  };
+  
   // Fix for empty page: Ensure we always show a valid page
   useEffect(() => {
     if (!isTransitioning) {
@@ -237,13 +259,18 @@ const Layout: React.FC = () => {
   const handleNavigation = (to: string) => {
     if (to === location.pathname || isTransitioning) return;
     
-    const currentIndex = pages.findIndex(page => page.path === location.pathname);
-    const nextIndex = pages.findIndex(page => page.path === to);
+    const currentOrder = getPageOrder(location.pathname);
+    const nextOrder = getPageOrder(to);
     
-    if (currentIndex !== -1 && nextIndex !== -1) {
-      const newDirection = nextIndex > currentIndex ? 1 : -1;
+    if (currentOrder > 0 && nextOrder > 0) {
+      // Moving "up" or "down" in navigation order
+      const newDirection = nextOrder > currentOrder ? 1 : -1; 
       setDirection(newDirection);
-      setTransitionColor(pages[nextIndex].color);
+      
+      // Find color for the page
+      const pageConfig = pages.find(p => p.path === to);
+      setTransitionColor(pageConfig?.color || '#6A5ACD');
+      
       setNextPathname(to);
       setIsTransitioning(true);
     } else {
@@ -279,8 +306,8 @@ const Layout: React.FC = () => {
           setIsTransitioning(false);
           setPreviousPathname(nextPathname);
           setNextPathname('');
-        }, 200); // Longer delay to ensure overlay fully exits after content loads
-      }, 350); // Better timing coordinated with overlay animation
+        }, 300); // Longer delay to ensure overlay fully exits after content loads
+      }, 400); // Better timing coordinated with overlay animation
       
       return () => clearTimeout(timer);
     }
@@ -289,12 +316,11 @@ const Layout: React.FC = () => {
   // Determine direction on location change for non-intercepted routes
   useEffect(() => {
     if (!isTransitioning && location.pathname !== previousPathname) {
-      const navOrder = ['/', '/projects', '/thoughts', '/recommendations'];
-      const prevIndex = navOrder.indexOf(previousPathname);
-      const currIndex = navOrder.indexOf(location.pathname);
+      const prevOrder = getPageOrder(previousPathname);
+      const currOrder = getPageOrder(location.pathname);
       
-      if (prevIndex !== -1 && currIndex !== -1) {
-        setDirection(currIndex > prevIndex ? 1 : -1);
+      if (prevOrder > 0 && currOrder > 0) {
+        setDirection(currOrder > prevOrder ? 1 : -1);
       }
       
       setPreviousPathname(location.pathname);
@@ -356,10 +382,19 @@ const Layout: React.FC = () => {
               initial="initial"
               animate="animate"
               exit="exit"
-              className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/100 rounded-xl shadow-xl p-12 origin-center"
-              style={{ minHeight: 'calc(100vh - 10rem)' }}
+              className="absolute inset-0 rounded-xl shadow-xl origin-center overflow-hidden"
+              style={{ 
+                minHeight: 'calc(100vh - 10rem)',
+                willChange: 'transform, opacity'  // Better performance hint for the browser
+              }}
             >
-              <motion.div className="h-full">
+              <motion.div 
+                className="h-full p-12"
+                initial={false}  // Content shouldn't have its own initial animation
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
                 <Outlet context={{ childVariants, HeadingStyles, GradientStyles }} />
               </motion.div>
             </motion.div>

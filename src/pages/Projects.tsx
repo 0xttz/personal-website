@@ -6,49 +6,53 @@ import { useOutletContext } from 'react-router-dom';
 const projectsData = [
   {
     id: "project1",
-    title: "AI Chat Interface",
-    description: "A responsive chat interface for AI conversations with sleek animations and real-time responses.",
-    tech: ["React", "TypeScript", "Framer Motion", "OpenAI API"],
-    link: "#",
+    title: "SAP BTP RAG Playground",
+    description: "Full stack RAG application built on SAP Business Technology Platform with AI Core and HANA DB for efficient document processing and retrieval.",
+    tech: ["Python", "React", "SAP BTP", "AI Core", "HANA DB"],
+    link: "/projects/project1",
     size: "large", // large tile
-    hasImage: true
+    hasImage: true,
+    imageOnly: false
   },
   {
     id: "project2",
-    title: "Nordic E-commerce Platform",
-    description: "Full-stack e-commerce platform with minimalist design aesthetics and integrated payment processing.",
-    tech: ["Next.js", "Stripe", "Tailwind CSS", "Prisma"],
-    link: "#",
-    size: "small", // small tile
-    hasImage: false
+    title: "Data Transformation Platform",
+    description: "Automated data processing solution using LangGraph that saves hundreds of hours of manual data transformation in my department at SAP.",
+    tech: ["Python", "LangGraph", "SAP BTP", "AI Services"],
+    link: "/projects/project2",
+    size: "medium", // medium tile
+    hasImage: true,
+    imageOnly: false
   },
   {
     id: "project3", 
-    title: "Data Visualization Dashboard",
-    description: "Interactive dashboard for visualizing complex datasets with customizable charts and filters.",
-    tech: ["D3.js", "React", "Firebase", "Material UI"],
-    link: "#",
+    title: "Agentic Sales Deck Generator",
+    description: "LangGraph workflow that facilitates web search, reasoning, and vector retrieval to automatically create PowerPoint slides for sales decks.",
+    tech: ["Python", "LangGraph", "PowerPoint API", "Vector DB"],
+    link: "/projects/project3",
     size: "medium", // medium tile
-    hasImage: false
+    hasImage: false,
+    imageOnly: false
   },
   {
     id: "project4",
-    title: "Climate Impact Calculator",
-    description: "Tool for individuals and businesses to calculate and offset their carbon footprint.",
-    tech: ["Vue.js", "Node.js", "Chart.js", "MongoDB"],
-    link: "#",
-    size: "medium", // medium tile
-    hasImage: true
+    title: "AI Journaling App",
+    description: "Full stack journaling application with basic AI features for mood tracking and insight generation.",
+    tech: ["React", "Node.js", "MongoDB", "OpenAI API"],
+    link: "/projects/project4",
+    size: "small", // small tile
+    hasImage: false,
+    imageOnly: false
   },
   {
     id: "project5",
-    title: "Visual Experiment",
-    description: "",
-    tech: [],
-    link: "#",
+    title: "Data Analytics Project",
+    description: "Data processing and analytics project focusing on extracting insights from complex datasets.",
+    tech: ["Python", "Pandas", "Matplotlib", "Scikit-learn"],
+    link: "/projects/project5",
     size: "small", // small tile
-    hasImage: true,
-    imageOnly: true
+    hasImage: false,
+    imageOnly: false
   }
 ];
 
@@ -73,11 +77,18 @@ interface ContextType {
     h2: string;
     subtitle: string;
   };
+  GradientStyles: {
+    primary: string;
+    secondary: string;
+    intense: string;
+    soft: string;
+    card: string;
+  };
 }
 
 const Projects: React.FC = () => {
   // Get animation variants and heading styles from layout context
-  const { childVariants, HeadingStyles } = useOutletContext<ContextType>();
+  const { childVariants, HeadingStyles, GradientStyles } = useOutletContext<ContextType>();
   
   return (
     <motion.div 
@@ -86,46 +97,52 @@ const Projects: React.FC = () => {
       animate="animate"
       exit="exit"
       className="flex flex-col h-full"
+      layoutId="page-content" // Ensure layout stability
     >
       <h1 className={HeadingStyles.h1}>Projects</h1>
       <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
-        A selection of projects I've built, exploring various technologies and design approaches.
+        A collection of full-stack applications and AI-driven projects built during my professional experience at SAP and academic studies. As a tech-savvy business major exploring the intersection of technology and business value, these projects showcase my practical approach to solving real-world problems through code.
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-min md:auto-rows-fr gap-6 flex-grow">
         {projectsData.map((project, index) => (
-          <motion.div
+          <motion.a
             key={project.id}
+            href={project.link}
             variants={childVariants}
             custom={index}
-            className={`${getTileClasses(project.size)} border border-accent-primary/20 rounded-lg overflow-hidden hover:shadow-lg transition-shadow`}
+            className={`${getTileClasses(project.size)} relative group overflow-hidden rounded-lg hover:shadow-lg transition-all duration-300`}
+            whileHover={{ y: -3, scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
             style={{ 
               minHeight: project.size === 'small' ? '200px' : '280px',
+              willChange: 'transform' // Performance hint
             }}
           >
+            {/* Border overlay with gradient */}
+            <div className="absolute inset-0 border border-accent-primary/20 rounded-lg overflow-hidden group-hover:border-accent-secondary/40 transition-colors duration-300"></div>
+            
             {project.imageOnly ? (
               // Image-only tile
-              <div className="h-full w-full bg-gradient-to-br from-accent-primary/30 to-accent-secondary/30 p-4 flex items-center justify-center">
+              <div className={`h-full w-full bg-gradient-to-br ${GradientStyles.secondary} p-4 flex items-center justify-center`}>
                 <p className="text-text-primary/50 italic">[ Midjourney Visual ]</p>
               </div>
             ) : project.hasImage ? (
               // Project with image
               <div className="h-full flex flex-col">
-                <div className="h-1/2 bg-gradient-to-br from-accent-primary/20 to-accent-secondary/20 p-4 flex items-center justify-center">
+                <div className={`h-1/2 bg-gradient-to-br ${GradientStyles.primary} p-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:${GradientStyles.secondary} transition-all duration-500`}>
                   <p className="text-text-primary/50 italic">[ Project Visual ]</p>
                 </div>
                 <div className="p-6 flex flex-col flex-grow bg-background">
-                  <h2 className="text-xl font-semibold text-text-primary mb-2 hover:text-accent-secondary transition-colors">
-                    <a href={project.link}>
-                      {project.title}
-                    </a>
+                  <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    {project.title}
                   </h2>
                   <p className="text-text-secondary mb-4 flex-grow">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tech.map(tech => (
                       <span 
                         key={tech} 
-                        className="text-xs bg-accent-primary/10 text-accent-primary px-2 py-1 rounded"
+                        className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded"
                       >
                         {tech}
                       </span>
@@ -136,17 +153,15 @@ const Projects: React.FC = () => {
             ) : (
               // Regular project tile
               <div className="h-full p-6 flex flex-col bg-background">
-                <h2 className="text-xl font-semibold text-text-primary mb-2 hover:text-accent-secondary transition-colors">
-                  <a href={project.link}>
-                    {project.title}
-                  </a>
+                <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                  {project.title}
                 </h2>
                 <p className="text-text-secondary mb-4 flex-grow">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {project.tech.map(tech => (
                     <span 
                       key={tech} 
-                      className="text-xs bg-accent-primary/10 text-accent-primary px-2 py-1 rounded"
+                      className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded"
                     >
                       {tech}
                     </span>
@@ -154,7 +169,10 @@ const Projects: React.FC = () => {
                 </div>
               </div>
             )}
-          </motion.div>
+            
+            {/* Interactive gradient overlay on hover */}
+            <div className="absolute inset-0 opacity-0 bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          </motion.a>
         ))}
       </div>
     </motion.div>
