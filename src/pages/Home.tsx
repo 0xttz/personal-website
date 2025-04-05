@@ -26,12 +26,11 @@ const Home: React.FC = () => {
 
   // Social media links - inline for the status section
   const socialLinks = [
-    { icon: <FaGithub size={20} />, url: "https://github.com/lennardkaye", label: "GitHub" },
-    { icon: <FaLinkedin size={20} />, url: "https://linkedin.com/in/lennardkaye", label: "LinkedIn" },
-    { icon: <FaTwitter size={20} />, url: "https://x.com/lennardkaye", label: "Twitter" },
-    { icon: <SiLichess size={20} />, url: "https://lichess.org/@/lennardk", label: "Lichess" },
-    { icon: <SiGoodreads size={20} />, url: "https://www.goodreads.com/user/show/158337367-lennard", label: "Goodreads" },
-    { icon: <FaEnvelope size={20} />, url: "mailto:lennard.kaye@gmail.com", label: "Email" }
+    { icon: <FaGithub size={28} />, url: "https://github.com/0xttz", label: "GitHub" },
+    { icon: <FaLinkedin size={28} />, url: "https://www.linkedin.com/in/lennard-kaye-428103196/", label: "LinkedIn" },
+    { icon: <FaTwitter size={28} />, url: "https://x.com/0xKaramazov", label: "Twitter" },
+    { icon: <SiLichess size={28} />, url: "https://lichess.org/@/lfk99", label: "Lichess" },
+    { icon: <SiGoodreads size={28} />, url: "https://www.goodreads.com/user/show/184384780-lennard-kaye", label: "Goodreads" },
   ];
 
   return (
@@ -88,7 +87,7 @@ const Home: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative"
-                whileHover={{ scale: 1.2 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0 }}
                 animate={{ 
@@ -97,21 +96,13 @@ const Home: React.FC = () => {
                 }}
                 style={{ willChange: 'transform' }}
               >
-                {/* Icon with gradient on hover */}
+                {/* Icon with subtle hover effect */}
                 <div className="relative flex items-center justify-center">
-                  {/* Background subtle glow for contrast */}
-                  <div className="absolute inset-0 rounded-full w-9 h-9 -m-2 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-                  
-                  {/* The actual icon */}
-                  <div className="relative z-10 transition-all duration-300 text-white/80 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary">
+                  {/* The actual icon - subtle color change on hover */}
+                  <div className="relative z-10 transition-all duration-200 text-white/80 group-hover:text-white">
                     {social.icon}
                   </div>
                 </div>
-                
-                {/* Label tooltip */}
-                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                  {social.label}
-                </span>
               </motion.a>
             ))}
           </div>

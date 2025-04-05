@@ -1,0 +1,19 @@
+/* Theme-specific CSS variables */
+:root {
+  --color-background: #FDFBF7;
+  --color-card: #F5F0E8;
+  --color-text-primary: #4E423D;
+  --color-text-secondary: #A1887F;
+  --color-accent-primary: #C87E68;
+  --color-accent-secondary: #6A5ACD;
+}
+
+/* Scandinavian Theme */
+.theme-scandinavian {
+  --color-background: #EEF3F0;
+  --color-card: #DCE5E0;
+  --color-text-primary: #18281E;
+  --color-text-secondary: #3A4C40;
+  --color-accent-primary: #1C3B26;
+  --color-accent-secondary: #7B4F9B;
+} 

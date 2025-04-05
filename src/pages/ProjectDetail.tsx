@@ -3,8 +3,44 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
 
+// Update the project data interface
+interface ProjectData {
+  title: string;
+  subtitle: string;
+  period: string;
+  overview: string;
+  challenge: string;
+  approach: string[];
+  outcomes: string[];
+  technologies: string[];
+  architectureDescription: string;
+  architecturePoints: string[];
+  roles: string[];
+  implementation: {
+    title: string;
+    description: string;
+    codeExample?: string;
+  }[];
+}
+
+// Sample implementation details to add to each project
+const implementationSections = [
+  {
+    title: "Technology Stack",
+    description: "This project was built using a carefully selected technology stack that balanced performance requirements, developer productivity, and long-term maintainability considerations."
+  },
+  {
+    title: "Key Features",
+    description: "We implemented several key features including advanced search capabilities, interactive query refinement, document preprocessing, role-based access control, and performance analytics."
+  },
+  {
+    title: "Architecture Approach",
+    description: "We implemented a hybrid approach to data processing, using both pre-trained models for general understanding and customized solutions for domain-specific tasks."
+  }
+];
+
 // Enhanced project data with detailed information
-const projectsData = {
+const projectsData: Record<string, ProjectData> = {
   'project1': { 
     title: 'SAP BTP RAG Playground',
     subtitle: 'A full stack Retrieval-Augmented Generation application',
@@ -30,7 +66,8 @@ const projectsData = {
       'API tier: Python FastAPI services for business logic, document processing, and vector operations',
       'Data tier: HANA Cloud for relational data and vector storage with AI Core for model inference'
     ],
-    roles: ['Lead Developer', 'Architecture Design', 'Integration Testing']
+    roles: ['Lead Developer', 'Architecture Design', 'Integration Testing'],
+    implementation: implementationSections
   },
   'project2': {
     title: 'Data Transformation Platform',
@@ -58,7 +95,8 @@ const projectsData = {
       'State Management: MongoDB for persistence of intermediate and final results',
       'Web Interface: React frontend with Flask backend for job submission and monitoring'
     ],
-    roles: ['Solution Architect', 'Lead Developer', 'User Testing Coordinator']
+    roles: ['Solution Architect', 'Lead Developer', 'User Testing Coordinator'],
+    implementation: implementationSections
   },
   'project3': {
     title: 'Agentic Sales Deck Generator',
@@ -86,7 +124,8 @@ const projectsData = {
       'Knowledge Store: Vector database with embeddings of internal documentation',
       'Presentation Layer: PowerPoint API integration for slide generation'
     ],
-    roles: ['Concept Development', 'Architecture Design', 'Implementation Lead']
+    roles: ['Concept Development', 'Architecture Design', 'Implementation Lead'],
+    implementation: implementationSections
   },
   'project4': {
     title: 'AI Journaling App',
@@ -114,7 +153,8 @@ const projectsData = {
       'Database: MongoDB for document storage with appropriate indexing',
       'AI Layer: OpenAI API integration for text analysis and insight generation'
     ],
-    roles: ['Full Stack Developer', 'UI/UX Design', 'AI Integration']
+    roles: ['Full Stack Developer', 'UI/UX Design', 'AI Integration'],
+    implementation: implementationSections
   },
   'project5': {
     title: 'Data Analytics Project',
@@ -142,7 +182,8 @@ const projectsData = {
       'Analysis Layer: Statistical analysis and machine learning models',
       'Visualization Layer: Matplotlib/Seaborn for chart generation'
     ],
-    roles: ['Data Analyst', 'Model Development', 'Visualization Design']
+    roles: ['Data Analyst', 'Model Development', 'Visualization Design'],
+    implementation: implementationSections
   }
 };
 
@@ -172,11 +213,11 @@ const ProjectDetail: React.FC = () => {
   if (!project) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold text-text-primary mb-4">Project Not Found</h1>
-        <p className="text-text-secondary mb-6">The project you're looking for doesn't exist.</p>
+        <h1 className="text-3xl font-bold theme-gradient-text mb-4">Project Not Found</h1>
+        <p className="text-theme-secondary mb-6">The project you're looking for doesn't exist.</p>
         <button 
           onClick={() => navigate('/projects')}
-          className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary transition-colors"
+          className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary theme-scandinavian:bg-scandi-accent-primary theme-scandinavian:hover:bg-scandi-accent-secondary transition-colors"
         >
           Back to Projects
         </button>
@@ -189,13 +230,13 @@ const ProjectDetail: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full overflow-y-auto scrollbar-thin scrollbar-thumb-accent-primary/5 hover:scrollbar-thumb-accent-primary/10 scrollbar-track-transparent scrollbar-thumb-rounded-full"
+      className="w-full h-full overflow-y-auto scrollbar-thin"
     >
       {/* Subtle back button at the top */}
       <div className="absolute top-4 left-4 z-10">
         <button 
           onClick={() => navigate('/projects')}
-          className="flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors group"
+          className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -210,19 +251,19 @@ const ProjectDetail: React.FC = () => {
         </button>
       </div>
 
-      <article className="w-full pt-16 pb-12 px-6 text-text-primary">
+      <article className="w-full pt-16 pb-12 px-6 text-theme-primary">
         {/* Header */}
-        <header className="mb-12 border-b border-border pb-8">
-          <h1 className="text-4xl font-bold mb-3">{project.title}</h1>
-          <p className="text-xl text-text-secondary mb-4">{project.subtitle}</p>
+        <header className="mb-12 border-b border-theme pb-8">
+          <h1 className="text-4xl font-bold mb-3 theme-gradient-text">{project.title}</h1>
+          <p className="text-xl text-theme-secondary mb-4">{project.subtitle}</p>
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full">
+            <span className="text-sm theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full">
               {project.period}
             </span>
             {project.roles.map((role, index) => (
               <span 
                 key={index}
-                className="text-sm bg-accent-primary/5 text-accent-primary px-3 py-1 rounded-full"
+                className="text-sm theme-scandinavian:bg-scandi-accent-primary/5 theme-scandinavian:text-scandi-accent-primary bg-accent-primary/5 text-accent-primary px-3 py-1 rounded-full"
               >
                 {role}
               </span>
@@ -232,7 +273,7 @@ const ProjectDetail: React.FC = () => {
 
         {/* Project Overview */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6">Overview</h2>
+          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Overview</h2>
           <p className="text-lg leading-relaxed mb-6">{project.overview}</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -244,7 +285,7 @@ const ProjectDetail: React.FC = () => {
                 The resulting system balances performance and usability, giving users powerful RAG capabilities without requiring in-depth AI knowledge. This approach has proven particularly valuable for teams dealing with large volumes of technical documentation and knowledge management challenges.
               </p>
             </div>
-            <div className={`bg-gradient-to-r ${GradientStyles.card} rounded-lg flex items-center justify-center text-text-secondary italic shadow-sm border border-border/10 overflow-hidden aspect-[4/3]`}>
+            <div className="bg-theme-card rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
               [ Architecture Diagram ]
             </div>
           </div>
@@ -260,7 +301,7 @@ const ProjectDetail: React.FC = () => {
 
         {/* Challenge section with integrated screenshot */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">The Challenge</h2>
+          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">The Challenge</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-3">
@@ -273,7 +314,7 @@ const ProjectDetail: React.FC = () => {
               </p>
             </div>
             <div className="md:col-span-2">
-              <div className={`bg-gradient-to-r ${GradientStyles.soft} rounded-lg flex items-center justify-center text-text-secondary italic shadow-sm border border-border/10 overflow-hidden aspect-[4/3]`}>
+              <div className="bg-theme-card theme-gradient-primary/10 rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
                 [ Dashboard Interface ]
               </div>
             </div>
@@ -282,7 +323,7 @@ const ProjectDetail: React.FC = () => {
 
         {/* Approach section with reversed layout */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">Our Approach</h2>
+          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Our Approach</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-2 md:order-2">
@@ -294,7 +335,7 @@ const ProjectDetail: React.FC = () => {
               </p>
             </div>
             <div className="md:col-span-3 md:order-1">
-              <div className={`bg-gradient-to-r ${GradientStyles.card} rounded-lg flex items-center justify-center text-text-secondary italic shadow-sm border border-border/10 overflow-hidden aspect-[4/3]`}>
+              <div className="bg-theme-card rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
                 [ Data Processing Interface ]
               </div>
             </div>
@@ -303,7 +344,7 @@ const ProjectDetail: React.FC = () => {
           <div className="mt-8">
             {project.approach.map((point, index) => (
               <p key={index} className="text-lg mb-4">
-                <span className="font-medium text-accent-primary">{index + 1}. </span>
+                <span className="font-medium theme-scandinavian:text-scandi-accent-primary text-accent-primary">{index + 1}. </span>
                 {point}
               </p>
             ))}
@@ -312,49 +353,28 @@ const ProjectDetail: React.FC = () => {
 
         {/* Implementation Details */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">Implementation Details</h2>
-          
-          <p className="text-lg leading-relaxed mb-6">
-            The implementation of this project involved careful attention to design patterns, performance optimization, and user experience considerations. Our development process followed agile methodologies with biweekly sprints and regular user feedback sessions.
-          </p>
-          
-          <p className="text-lg leading-relaxed mb-8">
-            We implemented a hybrid approach to document processing, using both pre-trained models for general understanding and fine-tuned models for domain-specific tasks. This allowed the system to handle a wide range of document types while still maintaining high accuracy for critical business documents.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-medium mb-3">Technology Stack</h3>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.technologies.map((tech, index) => (
-                  <span 
-                    key={index}
-                    className="text-sm bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full"
-                  >
-                    {tech}
-                  </span>
-                ))}
+          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Implementation</h2>
+          <div className="space-y-6">
+            {project.implementation.map((section, index) => (
+              <div key={index} className="mb-8">
+                <h3 className="text-xl font-semibold mb-3 theme-scandinavian:text-scandi-accent-primary text-accent-primary">{section.title}</h3>
+                <p className="text-lg leading-relaxed mb-3">{section.description}</p>
+                
+                {section.codeExample && (
+                  <div className="bg-theme-card rounded-lg p-5 my-4 overflow-hidden">
+                    <pre className="text-sm overflow-x-auto">
+                      <code className="font-mono">{section.codeExample}</code>
+                    </pre>
+                  </div>
+                )}
               </div>
-              <p className="text-base leading-relaxed">
-                This technology stack was carefully selected to balance performance requirements, developer productivity, and long-term maintainability considerations within the SAP ecosystem.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-medium mb-3">Key Features</h3>
-              <ul className="list-disc list-inside space-y-2 pl-2">
-                <li className="text-base">Advanced vector search with multiple retrieval strategies</li>
-                <li className="text-base">Interactive query refinement with context visibility</li>
-                <li className="text-base">Document preprocessing pipeline with metadata extraction</li>
-                <li className="text-base">Role-based access control integrated with BTP authentication</li>
-                <li className="text-base">Performance analytics dashboard for system administrators</li>
-              </ul>
-            </div>
+            ))}
           </div>
         </section>
 
         {/* Results & Impact */}
         <section className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6 bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">Results & Impact</h2>
+          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Results & Impact</h2>
           
           <p className="text-lg leading-relaxed mb-6">
             The implementation of this solution delivered significant value to the organization and its users. The project exceeded initial expectations in several key areas, providing both immediate benefits and long-term strategic advantages.
@@ -363,7 +383,7 @@ const ProjectDetail: React.FC = () => {
           <div className="mb-8">
             {project.outcomes.map((outcome, index) => (
               <p key={index} className="text-lg mb-4">
-                <span className="font-medium text-accent-primary">• </span>
+                <span className="font-medium theme-scandinavian:text-scandi-accent-primary text-accent-primary">• </span>
                 {outcome}
               </p>
             ))}

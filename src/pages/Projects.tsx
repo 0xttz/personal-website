@@ -120,29 +120,29 @@ const Projects: React.FC = () => {
             }}
           >
             {/* Border overlay with gradient */}
-            <div className="absolute inset-0 border border-accent-primary/20 rounded-lg overflow-hidden group-hover:border-accent-secondary/40 transition-colors duration-300"></div>
+            <div className="absolute inset-0 border border-theme rounded-lg overflow-hidden group-hover:border-theme transition-colors duration-300"></div>
             
             {project.imageOnly ? (
               // Image-only tile
-              <div className={`h-full w-full bg-gradient-to-br ${GradientStyles.secondary} p-4 flex items-center justify-center`}>
-                <p className="text-text-primary/50 italic">[ Midjourney Visual ]</p>
+              <div className={`h-full w-full theme-gradient-primary p-4 flex items-center justify-center`}>
+                <p className="text-theme-primary/50 italic">[ Midjourney Visual ]</p>
               </div>
             ) : project.hasImage ? (
               // Project with image
               <div className="h-full flex flex-col">
-                <div className={`h-1/2 bg-gradient-to-br ${GradientStyles.primary} p-4 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:${GradientStyles.secondary} transition-all duration-500`}>
-                  <p className="text-text-primary/50 italic">[ Project Visual ]</p>
+                <div className={`h-1/2 theme-gradient-primary p-4 flex items-center justify-center`}>
+                  <p className="text-theme-primary/50 italic">[ Project Visual ]</p>
                 </div>
-                <div className="p-6 flex flex-col flex-grow bg-background">
-                  <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                <div className="p-6 flex flex-col flex-grow bg-theme-background">
+                  <h2 className="text-xl font-semibold theme-gradient-text mb-2">
                     {project.title}
                   </h2>
-                  <p className="text-text-secondary mb-4 flex-grow">{project.description}</p>
+                  <p className="text-theme-secondary mb-4 flex-grow">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tech.map(tech => (
                       <span 
                         key={tech} 
-                        className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded"
+                        className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded theme-scandinavian:bg-gradient-to-r theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10 theme-scandinavian:text-scandi-accent-primary"
                       >
                         {tech}
                       </span>
@@ -152,16 +152,16 @@ const Projects: React.FC = () => {
               </div>
             ) : (
               // Regular project tile
-              <div className="h-full p-6 flex flex-col bg-background">
-                <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              <div className="h-full p-6 flex flex-col bg-theme-background">
+                <h2 className="text-xl font-semibold theme-gradient-text mb-2">
                   {project.title}
                 </h2>
-                <p className="text-text-secondary mb-4 flex-grow">{project.description}</p>
+                <p className="text-theme-secondary mb-4 flex-grow">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {project.tech.map(tech => (
                     <span 
                       key={tech} 
-                      className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded"
+                      className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded theme-scandinavian:bg-gradient-to-r theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10 theme-scandinavian:text-scandi-accent-primary"
                     >
                       {tech}
                     </span>

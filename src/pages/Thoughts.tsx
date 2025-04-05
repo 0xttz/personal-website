@@ -97,42 +97,42 @@ const Thoughts: React.FC = () => {
               custom={index}
               whileHover={{ y: -5, scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              className="relative group rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full"
+              className="relative group rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full card-enhanced"
               style={{ willChange: 'transform' }} // Performance hint
             >
               {/* Border gradient */}
-              <div className="absolute inset-0 border border-accent-primary/20 rounded-lg group-hover:border-accent-secondary/30 transition-colors duration-500"></div>
+              <div className="absolute inset-0 border border-theme rounded-lg group-hover:border-theme transition-colors duration-500"></div>
               
               {thought.visualOnly ? (
-                // Visual-only content
-                <div className={`h-full min-h-[240px] bg-gradient-to-tr ${GradientStyles.secondary} flex items-center justify-center p-6`}>
-                  <p className="text-text-primary/50 italic text-center">[ Midjourney - Abstract Design Process Visual ]</p>
+                // Visual-only content with more subtle gradient
+                <div className="h-full min-h-[240px] bg-theme-card bg-opacity-80 bg-gradient-to-tr from-accent-primary/10 to-accent-secondary/20 theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/20 flex items-center justify-center p-6">
+                  <p className="text-theme-primary/50 italic text-center">[ Midjourney - Abstract Design Process Visual ]</p>
                 </div>
               ) : (
                 // Regular thought content
-                <div className="p-6 bg-background">
+                <div className="p-6 bg-theme-background">
                   <div className="flex justify-between items-baseline mb-4">
                     <Link to={`/thoughts/${thought.id}`} className="block">
-                      <h2 className="text-xl font-semibold text-text-primary group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500">
+                      <h2 className="text-xl font-semibold theme-gradient-text transition-all duration-500">
                         {thought.title}
                       </h2>
                     </Link>
-                    <span className="text-sm text-text-secondary">{thought.date}</span>
+                    <span className="text-sm text-theme-secondary">{thought.date}</span>
                   </div>
                   
                   {thought.size === 'wide' && (
-                    <div className={`float-right ml-6 mb-4 w-1/3 h-32 bg-gradient-to-br ${GradientStyles.soft} rounded-lg flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500`}>
-                      <p className="text-text-primary/40 italic text-center text-sm">[ Concept Visual ]</p>
+                    <div className="float-right ml-6 mb-4 w-1/3 h-32 bg-gradient-to-br from-accent-primary/5 to-accent-secondary/10 theme-scandinavian:from-scandi-accent-primary/5 theme-scandinavian:to-scandi-accent-secondary/10 rounded-lg flex items-center justify-center transform group-hover:scale-105 transition-transform duration-500">
+                      <p className="text-theme-primary/40 italic text-center text-sm">[ Concept Visual ]</p>
                     </div>
                   )}
                   
-                  <p className="text-text-secondary mb-4">{thought.summary}</p>
+                  <p className="text-theme-secondary mb-4">{thought.summary}</p>
                   
                   <div className="flex gap-2 mt-4">
                     {thought.tags.map(tag => (
                       <span 
                         key={tag} 
-                        className={`text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded transition-all duration-500 group-hover:bg-gradient-to-r group-hover:${GradientStyles.soft}`}
+                        className="text-xs bg-accent-primary/10 text-accent-primary theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary px-2 py-1 rounded transition-all duration-500"
                       >
                         {tag}
                       </span>
@@ -143,7 +143,7 @@ const Thoughts: React.FC = () => {
                   <div className="mt-4 flex justify-end">
                     <Link to={`/thoughts/${thought.id}`}>
                       <motion.div 
-                        className="flex items-center text-sm text-accent-primary"
+                        className="flex items-center text-sm text-accent-primary theme-scandinavian:text-scandi-accent-primary"
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 0, x: -10 }}
                         whileHover={{ opacity: 1, x: 0 }}
@@ -159,8 +159,8 @@ const Thoughts: React.FC = () => {
                 </div>
               )}
               
-              {/* Hover gradient overlay */}
-              <div className="absolute inset-0 opacity-0 bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              {/* Hover gradient overlay - more subtle */}
+              <div className="absolute inset-0 opacity-0 bg-gradient-to-br from-accent-primary/3 to-accent-secondary/3 theme-scandinavian:from-scandi-accent-primary/3 theme-scandinavian:to-scandi-accent-secondary/3 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             </motion.article>
           </Link>
         ))}

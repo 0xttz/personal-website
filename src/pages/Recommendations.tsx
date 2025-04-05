@@ -60,17 +60,18 @@ const getTileClasses = (size: string) => {
   }
 };
 
-// Helper function to get background colors based on type
+// Helper function to get type-specific styling
 const getTypeColors = (type: string) => {
   switch (type) {
     case 'Book':
-      return 'from-blue-500/10 to-purple-500/10';
+      return 'from-accent-primary/20 to-accent-primary/10 theme-scandinavian:from-scandi-accent-primary/20 theme-scandinavian:to-scandi-accent-primary/10 text-accent-primary theme-scandinavian:text-scandi-accent-primary';
     case 'Video':
-      return 'from-red-500/10 to-orange-500/10';
+      return 'from-accent-secondary/20 to-accent-secondary/10 theme-scandinavian:from-scandi-accent-secondary/20 theme-scandinavian:to-scandi-accent-secondary/10 text-accent-secondary theme-scandinavian:text-scandi-accent-secondary';
+    case 'Article':
+      return 'from-accent-primary/20 to-accent-secondary/20 theme-scandinavian:from-scandi-accent-primary/20 theme-scandinavian:to-scandi-accent-secondary/20 text-accent-primary theme-scandinavian:text-scandi-accent-primary';
     case 'Visual':
-      return 'from-green-500/20 to-teal-500/10';
     default:
-      return 'from-accent-primary/10 to-accent-secondary/10';
+      return 'from-accent-primary/15 to-accent-secondary/15 theme-scandinavian:from-scandi-accent-primary/15 theme-scandinavian:to-scandi-accent-secondary/15 text-accent-primary theme-scandinavian:text-scandi-accent-primary';
   }
 };
 
@@ -85,28 +86,28 @@ interface ContextType {
 }
 
 const RecommendationItem: React.FC<typeof recommendationsData[0]> = ({ type, title, link, note, size, visualOnly }) => (
-  <div className={`h-full rounded-lg overflow-hidden ${visualOnly ? '' : 'border border-accent-primary/20 bg-background'}`}>
+  <div className={`h-full rounded-lg overflow-hidden ${visualOnly ? '' : 'border border-theme bg-theme-background card-enhanced'}`}>
     {visualOnly ? (
-      // Visual-only recommendation
-      <div className={`h-full min-h-[240px] bg-gradient-to-br ${getTypeColors(type)} flex items-center justify-center p-6`}>
-        <p className="text-text-primary/50 italic text-center">[ Midjourney - Curated Resources Visual ]</p>
+      // Visual-only recommendation - more vibrant gradient
+      <div className="h-full min-h-[240px] bg-gradient-to-br from-accent-primary/15 to-accent-secondary/20 theme-scandinavian:from-scandi-accent-primary/15 theme-scandinavian:to-scandi-accent-secondary/20 flex items-center justify-center p-6">
+        <p className="text-theme-primary/50 italic text-center">[ Midjourney - Curated Resources Visual ]</p>
       </div>
     ) : (
       // Content recommendation
       <div className="flex flex-col h-full">
         {size === 'medium' && (
-          <div className="h-24 bg-gradient-to-r from-accent-primary/5 to-accent-secondary/5"></div>
+          <div className="h-24 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10"></div>
         )}
         <div className="p-5 flex flex-col flex-grow">
-          <span className={`text-xs uppercase tracking-wider font-medium mb-2 inline-block px-2 py-1 rounded bg-gradient-to-r ${getTypeColors(type)} bg-opacity-50`}>
+          <span className={`text-xs uppercase tracking-wider font-medium mb-2 inline-block px-2 py-1 rounded bg-gradient-to-r ${getTypeColors(type)} bg-opacity-60`}>
             {type}
           </span>
-          <h3 className="text-lg font-semibold text-text-primary mt-1 mb-2 hover:text-accent-secondary transition-colors">
+          <h3 className="text-lg font-semibold theme-gradient-text hover:text-accent-secondary theme-scandinavian:hover:text-scandi-accent-secondary transition-colors">
             <a href={link} target="_blank" rel="noopener noreferrer">
               {title}
             </a>
           </h3>
-          <p className="text-sm text-text-secondary flex-grow">{note}</p>
+          <p className="text-sm text-theme-secondary flex-grow">{note}</p>
         </div>
       </div>
     )}
@@ -136,7 +137,7 @@ const Recommendations: React.FC = () => {
             key={item.id}
             variants={childVariants}
             custom={index}
-            className={`${getTileClasses(item.size)} shadow-md hover:shadow-lg transition-all`}
+            className={`${getTileClasses(item.size)} theme-shadow hover:shadow-lg transition-all`}
             style={{ minHeight: item.size === 'small' ? '180px' : '220px' }}
           >
             <RecommendationItem {...item} />

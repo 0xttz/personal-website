@@ -292,7 +292,7 @@ const ThoughtDetail: React.FC = () => {
         return <p key={index} className="text-lg leading-relaxed mb-6">{item.text}</p>;
       case 'heading':
         return (
-          <h2 key={index} className="text-2xl font-semibold mb-4 mt-8 bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">
+          <h2 key={index} className="text-2xl font-semibold mb-4 mt-8 theme-gradient-text drop-shadow-sm">
             {item.text}
           </h2>
         );
@@ -306,14 +306,14 @@ const ThoughtDetail: React.FC = () => {
         );
       case 'quote':
         return (
-          <blockquote key={index} className="border-l-4 border-accent-primary pl-4 italic my-6 py-2 text-text-secondary">
+          <blockquote key={index} className="border-l-4 border-theme pl-4 italic my-6 py-2 text-theme-secondary">
             <p className="text-lg mb-2">{item.text}</p>
             {item.author && <p className="text-sm">— {item.author}</p>}
           </blockquote>
         );
       case 'code':
         return (
-          <div key={index} className="bg-card rounded-lg p-4 my-6 overflow-x-auto">
+          <div key={index} className="bg-theme-card rounded-lg p-4 my-6 overflow-x-auto">
             <pre className="text-sm">
               <code className="font-mono">{item.text}</code>
             </pre>
@@ -327,11 +327,11 @@ const ThoughtDetail: React.FC = () => {
   if (!thought) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold text-text-primary mb-4">Thought Not Found</h1>
-        <p className="text-text-secondary mb-6">The article you're looking for doesn't exist.</p>
+        <h1 className="text-3xl font-bold theme-gradient-text mb-4">Thought Not Found</h1>
+        <p className="text-theme-secondary mb-6">The article you're looking for doesn't exist.</p>
         <button 
           onClick={() => navigate('/thoughts')}
-          className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary transition-colors"
+          className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary theme-scandinavian:bg-scandi-accent-primary theme-scandinavian:hover:bg-scandi-accent-secondary transition-colors"
         >
           Back to Thoughts
         </button>
@@ -344,13 +344,13 @@ const ThoughtDetail: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full overflow-y-auto scrollbar-thin scrollbar-thumb-accent-primary/5 hover:scrollbar-thumb-accent-primary/10 scrollbar-track-transparent scrollbar-thumb-rounded-full"
+      className="w-full h-full overflow-y-auto scrollbar-thin"
     >
       {/* Subtle back button at the top */}
       <div className="absolute top-4 left-4 z-10">
         <button 
           onClick={() => navigate('/thoughts')}
-          className="flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors group"
+          className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -365,14 +365,14 @@ const ThoughtDetail: React.FC = () => {
         </button>
       </div>
 
-      {/* Header image with improved gradient overlay */}
-      <div className={`w-full h-72 md:h-96 bg-gradient-to-r ${GradientStyles.intense} flex items-center justify-center relative overflow-hidden`}>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/5 z-10"></div>
+      {/* Hero image area with gradients */}
+      <div className="w-full h-72 md:h-96 bg-gradient-to-r from-accent-primary/40 to-accent-secondary/40 theme-scandinavian:from-scandi-accent-primary/40 theme-scandinavian:to-scandi-accent-secondary/40 flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-theme-background/30 to-theme-background/5 z-10"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10"></div>
         <div className="text-white/30 italic text-xl z-10">[ Header Image - {thought.heroImage} ]</div>
         
         {/* Title overlay at bottom of image */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 z-20">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 z-20">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 max-w-5xl mx-auto">
             {thought.title}
           </h1>
@@ -382,7 +382,7 @@ const ThoughtDetail: React.FC = () => {
       {/* Article metadata and content - wider layout */}
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Simplified metadata with tags next to date */}
-        <div className="flex flex-wrap justify-between items-center text-text-secondary mb-8">
+        <div className="flex flex-wrap justify-between items-center text-theme-secondary mb-8">
           <div className="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -394,7 +394,7 @@ const ThoughtDetail: React.FC = () => {
             {thought.tags.map(tag => (
               <span
                 key={tag}
-                className="text-sm bg-accent-primary/10 text-accent-primary px-3 py-1 rounded-full"
+                className="text-sm bg-accent-primary/10 text-accent-primary theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary px-3 py-1 rounded-full"
               >
                 {tag}
               </span>
@@ -404,21 +404,21 @@ const ThoughtDetail: React.FC = () => {
 
         {/* Article summary */}
         <div className="mb-12">
-          <p className="text-xl font-medium italic text-text-secondary border-l-4 border-accent-primary pl-4 py-2">
+          <p className="text-xl font-medium italic text-theme-secondary border-l-4 border-theme pl-4 py-2">
             {thought.summary}
           </p>
         </div>
 
         {/* Article content */}
-        <article className="prose prose-lg max-w-none">
+        <article className="prose prose-lg max-w-none text-theme-primary">
           {thought.content.map(renderContent)}
         </article>
 
         {/* Article footer - removed share buttons */}
-        <div className="mt-16 pt-8 border-t border-border flex justify-end">
+        <div className="mt-16 pt-8 border-t border-theme flex justify-end">
           <button 
             onClick={() => navigate('/thoughts')}
-            className="px-6 py-2 bg-accent-primary text-white rounded-lg hover:bg-accent-secondary transition-colors"
+            className="px-6 py-2 bg-accent-primary text-white hover:bg-accent-secondary theme-scandinavian:bg-scandi-accent-primary theme-scandinavian:hover:bg-scandi-accent-secondary transition-colors rounded-lg"
           >
             Back to Thoughts
           </button>

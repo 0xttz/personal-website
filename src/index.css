@@ -2,4 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme-specific classes */
+@layer base {
+  body {
+    @apply bg-background text-text-primary transition-colors duration-300;
+  }
+  
+  .theme-scandinavian {
+    --tw-bg-opacity: 1;
+    background-color: theme('colors.scandi-background');
+    --tw-text-opacity: 1;
+    color: theme('colors.scandi-text-primary');
+  }
+  
+  /* Themed scrollbars */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-accent-primary/10 rounded-full;
+  }
+  
+  .theme-scandinavian .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-scandi-accent-primary/10 rounded-full;
+  }
+  
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    @apply bg-accent-primary/20;
+  }
+  
+  .theme-scandinavian .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    @apply bg-scandi-accent-primary/20;
+  }
+}
+
+@layer components {
+  .bg-theme-background {
+    @apply bg-background;
+  }
+  
+  .theme-scandinavian .bg-theme-background {
+    @apply bg-scandi-background;
+  }
+  
+  .bg-theme-card {
+    @apply bg-card;
+  }
+  
+  .theme-scandinavian .bg-theme-card {
+    @apply bg-scandi-card;
+  }
+  
+  .text-theme-primary {
+    @apply text-text-primary;
+  }
+  
+  .theme-scandinavian .text-theme-primary {
+    @apply text-scandi-text-primary;
+  }
+  
+  .text-theme-secondary {
+    @apply text-text-secondary;
+  }
+  
+  .theme-scandinavian .text-theme-secondary {
+    @apply text-scandi-text-secondary;
+  }
+  
+  /* Project cards and tag styles - Fixed to avoid circular references */
+  .card-bg {
+    background-color: theme('colors.card');
+  }
+  
+  .theme-scandinavian .card-bg {
+    background-color: theme('colors.scandi-card');
+  }
+  
+  /* Accent colors */
+  .text-accent-primary {
+    color: theme('colors.accent-primary');
+  }
+  
+  .theme-scandinavian .text-accent-primary {
+    color: theme('colors.scandi-accent-primary');
+  }
+  
+  .text-accent-secondary {
+    color: theme('colors.accent-secondary');
+  }
+  
+  .theme-scandinavian .text-accent-secondary {
+    color: theme('colors.scandi-accent-secondary');
+  }
+  
+  /* Gradient backgrounds */
+  .theme-gradient-primary {
+    @apply bg-gradient-to-r from-accent-primary to-accent-secondary;
+  }
+  
+  .theme-scandinavian .theme-gradient-primary {
+    @apply bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary;
+  }
+  
+  /* Gradient text */
+  .theme-gradient-text {
+    @apply bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent;
+  }
+  
+  .theme-scandinavian .theme-gradient-text {
+    @apply bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary bg-clip-text text-transparent;
+  }
+  
+  /* Highlight text with gradient underline */
+  .theme-highlight {
+    @apply relative inline-block;
+  }
+  
+  .theme-highlight::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary;
+  }
+  
+  .theme-scandinavian .theme-highlight::after {
+    @apply bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary;
+  }
+  
+  /* Box shadows with theme colors */
+  .theme-shadow {
+    @apply shadow-lg shadow-accent-primary/10;
+  }
+  
+  .theme-scandinavian .theme-shadow {
+    @apply shadow-lg shadow-scandi-accent-primary/10;
+  }
+  
+  /* Border colors */
+  .border-theme {
+    @apply border-accent-primary/20;
+  }
+  
+  .theme-scandinavian .border-theme {
+    @apply border-scandi-accent-primary/20;
+  }
+  
+  /* Enhanced card styles */
+  .card-enhanced {
+    @apply bg-card border border-accent-primary/10 transition-all duration-300;
+  }
+  
+  .theme-scandinavian .card-enhanced {
+    @apply bg-scandi-card border border-scandi-accent-primary/10;
+  }
+  
+  .card-enhanced:hover {
+    @apply border-accent-secondary/20 shadow-md shadow-accent-primary/5;
+  }
+  
+  .theme-scandinavian .card-enhanced:hover {
+    @apply border-scandi-accent-secondary/20 shadow-md shadow-scandi-accent-primary/5;
+  }
+}
+
 /* Removed default Vite styles below */

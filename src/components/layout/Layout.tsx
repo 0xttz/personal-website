@@ -3,17 +3,20 @@ import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaSun, FaMoon } from 'react-icons/fa';
 import { SiLichess, SiGoodreads } from "react-icons/si";
+import { useTheme } from '../../context/ThemeContext';
 
-// Social media links component with hover effects
+// Social media links component with hover effects - moved closer to main content
 const SocialBar = () => {
+  const { isScandinavian } = useTheme();
+  
   return (
-    <div className="absolute -left-14 top-1/3 flex flex-col gap-6 z-40">
+    <div className="absolute -left-8 sm:-left-10 md:-left-11 top-1/4 sm:top-1/3 flex flex-col gap-4 sm:gap-6 z-40">
       {[
-        { icon: <FaGithub size={30} />, url: "https://github.com/lennardkaye", label: "GitHub" },
-        { icon: <FaLinkedin size={30} />, url: "https://linkedin.com/in/lennardkaye", label: "LinkedIn" },
-        { icon: <FaTwitter size={30} />, url: "https://x.com/lennardkaye", label: "Twitter" },
-        { icon: <SiLichess size={30} />, url: "https://lichess.org/@/lennardk", label: "Lichess" },
-        { icon: <SiGoodreads size={30} />, url: "https://www.goodreads.com/user/show/158337367-lennard", label: "Goodreads" }
+        { icon: <FaGithub size={24} className="sm:text-3xl" />, url: "https://github.com/lennardkaye", label: "GitHub" },
+        { icon: <FaLinkedin size={24} className="sm:text-3xl" />, url: "https://linkedin.com/in/lennardkaye", label: "LinkedIn" },
+        { icon: <FaTwitter size={24} className="sm:text-3xl" />, url: "https://x.com/lennardkaye", label: "Twitter" },
+        { icon: <SiLichess size={24} className="sm:text-3xl" />, url: "https://lichess.org/@/lennardk", label: "Lichess" },
+        { icon: <SiGoodreads size={24} className="sm:text-3xl" />, url: "https://www.goodreads.com/user/show/158337367-lennard", label: "Goodreads" }
       ].map((social, index) => (
         <motion.a
           key={social.label}
@@ -29,14 +32,22 @@ const SocialBar = () => {
           {/* Icon with gradient effect */}
           <div className="flex items-center justify-center relative">
             {/* Icon with gradient on hover */}
-            <div className="relative z-10 transition-all duration-300 text-text-secondary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent-primary group-hover:to-accent-secondary">
+            <div className={`relative z-10 transition-all duration-300 text-theme-secondary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r ${
+              isScandinavian 
+                ? 'group-hover:from-scandi-accent-primary group-hover:to-scandi-accent-secondary' 
+                : 'group-hover:from-accent-primary group-hover:to-accent-secondary'
+            }`}>
               {social.icon}
             </div>
           </div>
           
-          {/* Label that appears on hover */}
-          <div className="absolute left-6 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 backdrop-blur-sm rounded-r-full pl-5 pr-3 py-2 -z-10 opacity-0 transform -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-sm whitespace-nowrap">
-            <span className="text-sm font-medium text-text-primary">{social.label}</span>
+          {/* Label that appears on hover - hide on small screens */}
+          <div className={`absolute left-6 backdrop-blur-sm rounded-r-full pl-4 sm:pl-5 pr-2 sm:pr-3 py-1 sm:py-2 -z-10 opacity-0 transform -translate-x-full group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-sm whitespace-nowrap hidden sm:block ${
+            isScandinavian
+              ? 'bg-gradient-to-r from-scandi-accent-primary/10 to-scandi-accent-secondary/10'
+              : 'bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10'
+          }`}>
+            <span className="text-xs sm:text-sm font-medium text-theme-primary">{social.label}</span>
           </div>
         </motion.a>
       ))}
@@ -45,7 +56,9 @@ const SocialBar = () => {
 };
 
 // Stylish atmosphere control for controlling theme
-const AtmosphereControl = ({ isDark, onToggle }: { isDark: boolean; onToggle: () => void }) => {
+const AtmosphereControl = () => {
+  const { isScandinavian, toggleTheme } = useTheme();
+  
   return (
     <motion.div 
       className="relative flex flex-col items-end space-y-2"
@@ -53,48 +66,65 @@ const AtmosphereControl = ({ isDark, onToggle }: { isDark: boolean; onToggle: ()
       animate={{ opacity: 1 }}
       transition={{ delay: 0.3 }}
     >
-      <span className="text-xs text-text-secondary">Atmosphere</span>
+      <span className="text-xs text-theme-secondary">Atmosphere</span>
       <motion.button
-        onClick={onToggle}
-        className="group relative w-36 h-10 overflow-hidden rounded-md"
+        onClick={toggleTheme}
+        className="group relative w-40 h-10 overflow-hidden rounded-md"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
       >
-        {/* Day-Night Gradient Background */}
+        {/* Theme Gradient Background */}
         <div className="absolute inset-0 w-full h-full">
-          <div className={`absolute inset-0 opacity-${isDark ? '0' : '100'} transition-opacity duration-700 ease-in-out bg-gradient-to-r from-accent-primary/30 to-accent-secondary/40`}></div>
-          <div className={`absolute inset-0 opacity-${isDark ? '100' : '0'} transition-opacity duration-700 ease-in-out bg-gradient-to-r from-indigo-900/30 to-purple-800/40`}></div>
+          {/* Terracotta Theme */}
+          <div className={`absolute inset-0 transition-opacity duration-700 ease-in-out bg-gradient-to-r from-accent-primary/30 to-accent-secondary/40 ${isScandinavian ? 'opacity-0' : 'opacity-100'}`}></div>
+          {/* Scandinavian Theme */}
+          <div className={`absolute inset-0 transition-opacity duration-700 ease-in-out bg-gradient-to-r from-scandi-accent-primary/30 to-scandi-accent-secondary/40 ${isScandinavian ? 'opacity-100' : 'opacity-0'}`}></div>
         </div>
         
         {/* Decorative Elements */}
         <div className="absolute inset-0 flex items-center justify-between px-4 transition-transform duration-500">
           <motion.div
             animate={{ 
-              opacity: isDark ? 0.2 : 1,
-              scale: isDark ? 0.8 : 1,
-              x: isDark ? -8 : 0
+              opacity: isScandinavian ? 0.2 : 1,
+              scale: isScandinavian ? 0.8 : 1,
+              x: isScandinavian ? -8 : 0
             }}
             className="text-white"
           >
-            <FaSun size={18} />
+            {/* Desert/Terracotta icon - simplified and larger */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
           </motion.div>
           
           <motion.div
             animate={{ 
-              opacity: isDark ? 1 : 0.2,
-              scale: isDark ? 1 : 0.8,
-              x: isDark ? 0 : 8 
+              opacity: isScandinavian ? 1 : 0.2,
+              scale: isScandinavian ? 1 : 0.8,
+              x: isScandinavian ? 0 : 8 
             }}
             className="text-white"
           >
-            <FaMoon size={18} />
+            {/* Forest/Scandinavian icon - simplified and larger */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 19h8a4 4 0 0 0 0-8h-1a6.5 6.5 0 1 0-13 0 4 4 0 0 0 0 8h6Z"></path>
+              <path d="M12 19v3"></path>
+            </svg>
           </motion.div>
         </div>
         
         {/* Text Layer */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-xs font-medium text-white mix-blend-difference">
-            {isDark ? "Night Mode" : "Day Mode"}
+            {isScandinavian ? "Scandinavian" : "Terracotta"}
           </span>
         </div>
       </motion.button>
@@ -105,16 +135,22 @@ const AtmosphereControl = ({ isDark, onToggle }: { isDark: boolean; onToggle: ()
 // Simple NavLink component for styling active state
 const StyledNavLink = ({ to, children }: { to: string; children: React.ReactNode }) => {
   const isActive = useLocation().pathname === to;
+  const { isScandinavian } = useTheme();
+  
   return (
     <NavLink
       to={to}
       className={`relative block text-right text-base transition-colors duration-200 ease-in-out py-3
-                 ${isActive ? 'font-semibold text-accent-secondary' : 'font-medium text-text-secondary hover:text-text-primary'}`}
+                 ${isActive 
+                   ? 'font-semibold ' + (isScandinavian ? 'text-scandi-accent-secondary' : 'text-accent-secondary')
+                   : 'font-medium text-theme-secondary hover:text-theme-primary'}`}
     >
       <span className="mr-6">{children}</span>
       <span className="absolute right-0 top-1/2 -translate-y-1/2 h-3 w-3 flex items-center justify-center"> 
         <motion.div 
-          className="bg-gradient-to-br from-accent-primary to-accent-secondary rounded-full"
+          className={`rounded-full ${isScandinavian 
+            ? 'bg-gradient-to-br from-scandi-accent-primary to-scandi-accent-secondary'
+            : 'bg-gradient-to-br from-accent-primary to-accent-secondary'}`}
           animate={{ scale: isActive ? 1.6 : 0.8 }}
           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
         >
@@ -139,6 +175,42 @@ export const GradientStyles = {
   intense: "from-accent-primary/50 to-accent-secondary/70",
   soft: "from-accent-primary/10 to-accent-secondary/10",
   card: "from-white/40 to-white/80"
+};
+
+// Dynamic heading styles
+export const useThemeStyles = () => {
+  const { isScandinavian } = useTheme();
+  
+  return {
+    headingStyles: {
+      h1: `text-4xl font-bold bg-gradient-to-r ${isScandinavian 
+        ? 'from-scandi-accent-primary to-scandi-accent-secondary' 
+        : 'from-accent-primary to-accent-secondary'} bg-clip-text text-transparent drop-shadow-sm`,
+      h2: `text-2xl font-semibold ${isScandinavian 
+        ? 'bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary bg-clip-text text-transparent' 
+        : 'bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent'} relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-1/3 after:h-0.5 after:bg-gradient-to-r ${isScandinavian 
+          ? 'after:from-scandi-accent-primary after:to-scandi-accent-secondary' 
+          : 'after:from-accent-primary after:to-accent-secondary'}`,
+      subtitle: `text-lg ${isScandinavian 
+        ? 'text-scandi-text-secondary' 
+        : 'text-text-secondary'} max-w-3xl leading-relaxed`
+    },
+    gradientStyles: {
+      primary: isScandinavian 
+        ? "from-scandi-accent-primary/20 to-scandi-accent-secondary/30" 
+        : "from-accent-primary/20 to-accent-secondary/30",
+      secondary: isScandinavian 
+        ? "from-scandi-accent-primary/30 to-scandi-accent-secondary/50" 
+        : "from-accent-primary/30 to-accent-secondary/50",
+      intense: isScandinavian 
+        ? "from-scandi-accent-primary/50 to-scandi-accent-secondary/70" 
+        : "from-accent-primary/50 to-accent-secondary/70",
+      soft: isScandinavian 
+        ? "from-scandi-accent-primary/10 to-scandi-accent-secondary/10" 
+        : "from-accent-primary/10 to-accent-secondary/10",
+      card: "from-white/40 to-white/80"
+    }
+  };
 };
 
 // Page navigation order - used for determining animation direction
@@ -240,7 +312,8 @@ const Layout: React.FC = () => {
   const [nextPathname, setNextPathname] = useState<string>('');
   const [transitionColor, setTransitionColor] = useState<string>('#6A5ACD');
   const [currentContent, setCurrentContent] = useState<string>(location.pathname);
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+  const { isScandinavian } = useTheme();
+  const { headingStyles, gradientStyles } = useThemeStyles();
   
   // Helper to get page order number
   const getPageOrder = (path: string): number => {
@@ -327,32 +400,25 @@ const Layout: React.FC = () => {
     }
   }, [location.pathname, previousPathname, isTransitioning]);
 
-  // Theme toggle function
-  const toggleDarkMode = () => {
-    setIsDarkTheme(!isDarkTheme);
-    // Later: Implement actual dark mode toggle logic
-    console.log("Theme toggled to:", !isDarkTheme ? "dark" : "light");
-  };
-
   return (
-    <div className="flex justify-center items-start min-h-screen bg-background text-text-primary py-20 px-32"> 
+    <div className="flex justify-center items-start min-h-screen bg-theme-background text-theme-primary py-6 sm:py-10 md:py-16 lg:py-20 px-4 sm:px-8 md:px-16 lg:px-32"> 
       <div className="flex w-full max-w-full"> 
         {/* Nav column with reduced spacing to main content */} 
-        <nav className="w-72 flex-shrink-0 flex flex-col items-end pr-14 pt-8 space-y-5 sticky top-20 h-[calc(100vh-10rem)]"> 
-          <div className="flex-grow w-full space-y-4">
+        <nav className="w-68 flex-shrink-0 flex flex-col items-end pr-6 sm:pr-8 md:pr-10 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5 sticky top-12 sm:top-16 md:top-20 h-[calc(100vh-6rem)] sm:h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)]"> 
+          <div className="flex-grow w-full space-y-3 sm:space-y-4">
             <StyledNavLink to="/">Me</StyledNavLink>
             <StyledNavLink to="/projects">Projects</StyledNavLink>
             <StyledNavLink to="/thoughts">Thoughts</StyledNavLink>
             <StyledNavLink to="/recommendations">Recommendations</StyledNavLink>
           </div>
-          <div className="mb-4 flex justify-end">
-            <AtmosphereControl isDark={isDarkTheme} onToggle={toggleDarkMode} />
+          <div className="mb-2 sm:mb-4 flex justify-end">
+            <AtmosphereControl />
           </div>
         </nav>
 
         {/* Main content with improved shadow and rounded corners */}
         <main className="flex-1 relative overflow-hidden rounded-xl shadow-2xl"> 
-          {/* Social media sidebar - positioned relative to main */}
+          {/* Social media sidebar - positioned closer to main content */}
           <SocialBar />
           
           {/* Page transition overlay */}
@@ -384,18 +450,18 @@ const Layout: React.FC = () => {
               exit="exit"
               className="absolute inset-0 rounded-xl shadow-xl origin-center overflow-hidden"
               style={{ 
-                minHeight: 'calc(100vh - 10rem)',
+                minHeight: 'calc(100vh - 6rem)',
                 willChange: 'transform, opacity'  // Better performance hint for the browser
               }}
             >
               <motion.div 
-                className="h-full p-12"
+                className="h-full p-4 sm:p-8 md:p-12"
                 initial={false}  // Content shouldn't have its own initial animation
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Outlet context={{ childVariants, HeadingStyles, GradientStyles }} />
+                <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
               </motion.div>
             </motion.div>
           </AnimatePresence>
