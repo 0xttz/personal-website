@@ -107,16 +107,16 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({ type, title, li
   <div className={`h-full rounded-lg overflow-hidden ${visualOnly ? '' : 'border border-theme bg-theme-background card-enhanced'}`}>
     {visualOnly ? (
       // Visual-only recommendation - more vibrant gradient
-      <div className="h-full min-h-[240px] bg-gradient-to-br from-accent-primary/15 to-accent-secondary/20 theme-scandinavian:from-scandi-accent-primary/15 theme-scandinavian:to-scandi-accent-secondary/20 flex items-center justify-center p-6">
+      <div className="h-full min-h-[220px] bg-gradient-to-br from-accent-primary/15 to-accent-secondary/20 theme-scandinavian:from-scandi-accent-primary/15 theme-scandinavian:to-scandi-accent-secondary/20 flex items-center justify-center p-6">
         <p className="text-theme-primary/50 italic text-center">[ Midjourney - Curated Resources Visual ]</p>
       </div>
     ) : (
       // Content recommendation
       <div className="flex flex-col h-full">
         {size === 'medium' && (
-          <div className="h-24 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10"></div>
+          <div className="h-16 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10"></div>
         )}
-        <div className="p-5 flex flex-col flex-grow">
+        <div className="p-4 flex flex-col flex-grow">
           <span className={`text-xs uppercase tracking-wider font-medium mb-2 inline-block px-2 py-1 rounded bg-gradient-to-r ${getTypeColors(type)} bg-opacity-60`}>
             {type}
           </span>
@@ -140,15 +140,15 @@ const Recommendations: React.FC = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="h-full flex flex-col"
       layoutId="page-content"
+      className="p-4 sm:p-6 md:p-8 h-full flex flex-col overflow-hidden"
     >
       <h1 className={HeadingStyles.h1}>Recommendations</h1>
       <p className={`mt-2 mb-4 ${HeadingStyles.subtitle}`}>
         A curated list of books, articles, tools, and other resources that I've found valuable or inspiring.
       </p>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-fr flex-grow"> 
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 flex-grow auto-rows-fr pt-1 pb-2">
         {recommendationsData.map((item, index) => (
           <motion.a
             key={item.id} 

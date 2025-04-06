@@ -34,14 +34,13 @@ const Home: React.FC = () => {
   ];
 
   return (
-    // Container to allow flex layout within the card
-    <motion.div 
-      className="text-text-primary h-full flex flex-col"
+    <motion.div
       variants={childVariants}
-      initial="initial" 
-      animate="animate" 
+      initial="initial"
+      animate="animate"
       exit="exit"
-      layoutId="page-content" // Ensure layout stability
+      layoutId="page-content"
+      className="p-4 sm:p-6 md:p-8 flex flex-col justify-center h-full overflow-hidden"
     > 
       {/* Top section: Intro Text */}
       <motion.div variants={childVariants} initial={false}>

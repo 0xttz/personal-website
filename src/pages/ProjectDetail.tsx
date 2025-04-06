@@ -3,6 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
 
+// Import project images
+import ragImage1 from '../assets/projects/rag1.png';
+import ragImage2 from '../assets/projects/rag2.png';
+import agenticSalesImage1 from '../assets/projects/agentic-sales1.png';
+import agenticSalesImage2 from '../assets/projects/agentic-sales2.png';
+
 // Update the project data interface
 interface ProjectData {
   title: string;
@@ -20,6 +26,7 @@ interface ProjectData {
     title: string;
     description: string;
     codeExample?: string;
+    imagePath?: string;
   }[];
 }
 
@@ -43,31 +50,61 @@ const implementationSections = [
 const projectsData: Record<string, ProjectData> = {
   'project1': { 
     title: 'SAP BTP RAG Playground',
-    subtitle: 'A full stack Retrieval-Augmented Generation application',
+    subtitle: 'A full stack AI chat application with Retrieval-Augmented Generation (RAG) capabilities',
     period: 'October 2023 - February 2024',
-    overview: 'Developed a comprehensive RAG playground on SAP Business Technology Platform, enabling advanced document processing and retrieval capabilities for enterprise use cases.',
-    challenge: 'The challenge was to build a scalable, enterprise-grade RAG application that could handle sensitive corporate documents while maintaining high performance and accuracy.',
+    overview: 'Developed a comprehensive AI chat application featuring Retrieval Augmented Generation (RAG) capabilities. Built on a modern client-server architecture, the system integrates a React TypeScript frontend with a Python Flask backend, featuring JWT-based authentication, real-time WebSocket communication, advanced document management with vector storage, and flexible AI model integration.',
+    challenge: 'The primary challenge was to design and build a scalable, secure, and robust application capable of handling complex document processing, real-time AI interactions, and efficient retrieval from large datasets within an enterprise environment, specifically leveraging SAP BTP services.',
     approach: [
-      'Leveraged SAP BTP services including AI Core for model hosting and inference',
-      'Utilized HANA DB for efficient vector storage and retrieval',
-      'Built a React frontend with intuitive document upload, query interfaces, and visualization components',
-      'Implemented Python backend services for document processing, embedding generation, and context augmentation'
+      'Designed a client-server architecture using React/TypeScript for the frontend SPA and Python/Flask for the backend API.',
+      'Implemented real-time communication using WebSockets (Flask-Sock) for streaming AI responses and status updates.',
+      'Secured the application using JWT-based authentication across both REST and WebSocket endpoints.',
+      'Developed a sophisticated RAG pipeline including document ingestion, text extraction (with OCR), chunking, embedding generation, and vector storage/search.',
+      'Integrated external AI services via a dedicated AI Service layer with adapters for multi-model support.',
+      'Utilized a layered service architecture in the backend for modularity and dependency injection (Base, Core, High-Level services).'
     ],
     outcomes: [
-      'Successfully deployed to production environment serving 50+ users',
-      'Reduced time-to-insight for document queries by 75%',
-      'Implemented 3 different retrieval strategies with configurable parameters',
-      'Created a reusable architecture pattern that\'s being adopted by other teams'
+      'A fully functional RAG application enabling users to chat with AI models augmented by knowledge from uploaded documents.',
+      'Real-time, streaming responses for chat interactions via WebSockets.',
+      'Robust document management system with background processing for ingestion, chunking, and embedding.',
+      'Secure user authentication and data isolation.',
+      'Modular and scalable backend architecture ready for extension.',
+      'Intuitive frontend interface for chat, document management, and RAG configuration.'
     ],
-    technologies: ['Python', 'React', 'SAP BTP', 'AI Core', 'HANA Cloud', 'Vector Embedding', 'LangChain', 'TypeScript', 'Docker'],
-    architectureDescription: 'The system follows a three-tier architecture with clear separation of concerns:',
+    technologies: [
+      'Python', 'Flask', 'Flask-Sock', 'Flask-JWT-Extended', 
+      'React', 'TypeScript', 'TailwindCSS', 'React Router', 'React Query', 
+      'WebSocket', 'JWT', 'LangChain', 'Vector Database', 'Docker', 
+      'SAP BTP', 'AI Core'
+    ],
+    architectureDescription: 'The application employs a multi-faceted architecture:',
     architecturePoints: [
-      'Frontend tier: React SPA with TypeScript handling UI rendering and user interactions',
-      'API tier: Python FastAPI services for business logic, document processing, and vector operations',
-      'Data tier: HANA Cloud for relational data and vector storage with AI Core for model inference'
+      'Client-Server: React SPA communicating with a Python Flask backend via REST APIs and WebSockets.',
+      'RAG System: Dedicated pipeline for document processing, vector embedding/storage, and context retrieval.',
+      'WebSocket System: Handles real-time bidirectional communication for chat and status updates with message queuing.',
+      'AI Integration: Modular service layer interfacing with external AI models, supporting streaming and context injection.',
+      'Layered Backend: Services organized into Base, Core, and High-Level tiers for clear separation of concerns.'
     ],
     roles: ['Lead Developer', 'Architecture Design', 'Integration Testing'],
-    implementation: implementationSections
+    implementation: [
+      {
+        title: "Frontend Architecture",
+        description: "The frontend is a Single Page Application (SPA) built with React and TypeScript, utilizing TailwindCSS for styling. Key components include dedicated pages for chat, document management, and authentication, managed UI components (like Message Bubbles, Document Uploader), Zustand for state management (inferred, common pattern, adjust if different), and specific services for API and WebSocket communication. React Query handles data fetching and caching.",
+        imagePath: ragImage1
+      },
+      {
+        title: "Backend Architecture",
+        description: "The Python Flask backend exposes RESTful APIs and WebSocket endpoints. It features a layered service architecture (Service Container, Base/Core/High-Level Services) for managing dependencies and logic. Core components include Authentication, Document Processing, RAG operations, AI model interaction (via AICoreService and ModelService), and WebSocket handling. JWT manages authentication.",
+        imagePath: ragImage2
+      },
+      {
+        title: "RAG Pipeline",
+        description: "The RAG system processes uploaded documents through a pipeline: file handling, text extraction (including OCR), chunking, embedding generation (using models from AI Core), and storage in a Vector Database. During queries, user input is embedded, searched against the vector store, and relevant context is retrieved and injected into the prompt sent to the AI model.",
+      },
+      {
+        title: "Real-time Communication",
+        description: "WebSockets facilitate real-time features. The frontend's `WebSocketCore` manages connections and message handling, including queuing during disconnections. The backend's `WebSocketService` handles connection authentication, message routing, and streams AI responses back to the client.",
+      }
+    ]
   },
   'project2': {
     title: 'Data Transformation Platform',
@@ -99,33 +136,69 @@ const projectsData: Record<string, ProjectData> = {
     implementation: implementationSections
   },
   'project3': {
-    title: 'Agentic Sales Deck Generator',
-    subtitle: 'Automating sales presentation creation with AI',
+    title: 'Agentic Sales Deck Generator (POC)',
+    subtitle: 'A LangGraph-based workflow for automated strategic analysis and presentation generation',
     period: 'January 2024 - March 2024',
-    overview: 'Developed an MVP for an agentic workflow that generates PowerPoint sales decks by coordinating web search, reasoning, and vector retrieval tasks.',
-    challenge: 'Sales teams were spending significant time creating custom slide decks for prospects, often with inconsistent messaging and outdated information.',
+    overview: 'Developed a Proof of Concept (POC) for an advanced agentic workflow using the LangGraph framework. This system orchestrates multiple AI agents, powered by models like Gemini Pro and GPT-4o via SAP AI Core, to perform a sequence of strategic analysis tasks. It starts with classifying a company\'s industry, researches strategic priorities, identifies key executives (CXOs), analyzes their objectives and pain points, and finally generates a tailored PowerPoint sales presentation. The POC demonstrated the feasibility of automating complex research and content creation. Note: This POC is currently being redeveloped by our team into an MVP.',
+    challenge: 'Sales and strategy teams spent considerable time manually researching companies, identifying key stakeholders, understanding their priorities, and creating customized presentations. This process was time-consuming, prone to inconsistencies, and difficult to scale, especially when needing to incorporate insights from vast amounts of internal documentation.',
     approach: [
-      'Designed a multi-agent system using LangGraph to coordinate specialized agents',
-      'Created agents for web research, competitive analysis, and content generation',
-      'Implemented vector retrieval for accessing internal product knowledge',
-      'Built PowerPoint generation capabilities with template-based customization'
+      'Designed a modular architecture using Python with the asynchronous Quart web framework and LangGraph for workflow orchestration.',
+      'Built a multi-step analysis pipeline orchestrated by LangGraph:',
+      '  - 1. Industry Classification: Determines the company\'s industry, using AI and web search fallback.',
+      '  - 2. Strategic Priority Analysis: Conducts automated web research to identify key strategic goals, ranking sources for credibility.',
+      '  - 3. CXO Identification: Extracts relevant executives and normalizes their roles.',
+      '  - 4. CXO Objectives Analysis: Generates likely objectives for identified CXOs based on research and strategic context.',
+      '  - 5. CXO Pain Points Analysis: Uses vector search across internal knowledge bases to find relevant pain points associated with the CXO\'s role and industry.',
+      '  - 6. Presentation Generation: Dynamically creates PowerPoint slides using predefined templates and the gathered insights.',
+      'Leveraged SAP AI Core to seamlessly integrate and utilize multiple LLMs (Gemini Pro, GPT-4o, Claude) for different reasoning and generation tasks within the workflow.',
+      'Implemented efficient vector search across multiple collections in SAP HANA Cloud. Vectorized over 10,000 chunks of data related to common business pain points, end-to-end processes, and solution capabilities to provide deep, context-aware retrieval.',
+      'Developed an event-driven notification system using WebSockets to provide real-time updates on the workflow progress to the user interface.'
     ],
     outcomes: [
-      'Reduced deck creation time from 4-5 hours to under 30 minutes',
-      'Ensured consistent messaging and up-to-date information',
-      'Created 12 slide templates covering different customer scenarios',
-      'Enabled sales representatives to focus on high-value customer interactions'
+      'Successfully demonstrated the feasibility of using a LangGraph agentic workflow for automated strategic analysis and presentation generation (POC).',
+      'Reduced estimated time for deck creation from hours to minutes in test scenarios.',
+      'Showcased integration with multiple LLMs via SAP AI Core for specialized tasks.',
+      'Validated the use of vector search across 10,000+ vectorized chunks in HANA DB for relevant internal knowledge retrieval.',
+      'Proved the concept of dynamic PowerPoint generation based on workflow outputs.',
+      'The successful POC has led to the initiation of an MVP development phase by the team.'
     ],
-    technologies: ['Python', 'LangGraph', 'PowerPoint API', 'LlamaIndex', 'Vector Embeddings', 'Web Scraping', 'OAuth'],
-    architectureDescription: 'The system follows an agent-based architecture:',
+    technologies: [
+      'Python', 'LangGraph', 'Quart (ASGI)', 'asyncio', 'WebSockets',
+      'SAP AI Core', 'SAP HANA Cloud (Vector DB)',
+      'Gemini Pro', 'GPT-4o', 'Claude', 
+      'Vector Embeddings', 'Semantic Search', 'Web Scraping',
+      'PowerPoint Generation', 'HTML', 'CSS', 'JavaScript' 
+    ],
+    architectureDescription: 'The system employs a modular, event-driven architecture centered around a LangGraph workflow, designed for asynchronous processing and real-time updates:',
     architecturePoints: [
-      'Coordination Layer: LangGraph workflow managing agent interactions',
-      'Specialized Agents: Web search, internal knowledge retrieval, slide composition',
-      'Knowledge Store: Vector database with embeddings of internal documentation',
-      'Presentation Layer: PowerPoint API integration for slide generation'
+      'Modular Components: Clear separation between core capabilities (AI model interaction, vector search, web research) and the specific analysis steps.',
+      'LangGraph Workflow: Orchestrates the multi-step analysis pipeline, managing state and transitions between tasks like classification, research, analysis, and generation.',
+      'Event-Driven Updates: Uses an internal event system feeding into WebSockets, allowing the frontend to display real-time progress without polling.',
+      'Asynchronous Backend: Built with Quart and asyncio to handle potentially long-running AI and research tasks efficiently.',
+      'Vector Knowledge Base: Leverages SAP HANA Cloud\'s vector capabilities, storing over 10,000 embedded data chunks across collections for pain points, processes, and solutions.',
+      'Multi-Model AI Integration: Flexible integration with various LLMs through SAP AI Core for optimal task performance.'
     ],
     roles: ['Concept Development', 'Architecture Design', 'Implementation Lead'],
-    implementation: implementationSections
+    implementation: [
+      {
+        title: "LangGraph Workflow Engine & Analysis Pipeline",
+        description: "The core logic resides in a LangGraph workflow. This stateful graph defines the sequence of analysis: starting with company/industry context, progressing through web research for strategic priorities, identifying key executives, analyzing their potential objectives and relevant pain points (using vector search), and culminating in the automated generation of a PowerPoint deck. Each step is an asynchronous Python function.",
+        imagePath: agenticSalesImage1
+      },
+      {
+        title: "Real-Time Frontend Communication",
+        description: "To provide users with live progress updates, the backend utilizes an event-driven approach. As the LangGraph workflow progresses through each analysis step, it emits status events. These events are broadcast via WebSockets to the connected frontend (built with HTML, CSS, JavaScript), allowing the UI to reflect the current stage and display generated insights without needing to refresh.",
+        imagePath: agenticSalesImage2
+      },
+      {
+        title: "Foundation Services & Modularity",
+        description: "The architecture emphasizes reusability. Core functionalities like interacting with AI models via SAP AI Core, performing vector searches in HANA Cloud, and conducting web research are encapsulated in foundational modules. The specific analysis steps (like classifying industry or identifying CXO pain points) utilize these services, promoting cleaner code and easier maintenance."
+      },
+      {
+        title: "Vector Search for Contextual Insights",
+        description: "A key technique employed was semantic search using vector embeddings stored in SAP HANA Cloud. Over 10,000 chunks of internal data (covering common business pain points, standard processes, and solution details) were vectorized. This allowed the workflow to retrieve highly relevant, context-specific information – for example, identifying likely pain points for a CFO in the manufacturing sector – far beyond simple keyword matching."
+      }
+    ]
   },
   'project4': {
     title: 'AI Journaling App',
@@ -230,10 +303,10 @@ const ProjectDetail: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full overflow-y-auto scrollbar-thin"
+      className="w-full h-full overflow-y-auto scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200"
     >
-      {/* Subtle back button at the top */}
-      <div className="absolute top-4 left-4 z-10">
+      {/* Subtle back button at the top - Increased z-index */}
+      <div className="absolute top-4 left-4 z-30">
         <button 
           onClick={() => navigate('/projects')}
           className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
@@ -274,19 +347,30 @@ const ProjectDetail: React.FC = () => {
         {/* Project Overview */}
         <section className="mb-16">
           <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Overview</h2>
-          <p className="text-lg leading-relaxed mb-6">{project.overview}</p>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div>
-              <p className="text-lg leading-relaxed mb-4">
-                Working on this project presented a unique opportunity to blend cutting-edge AI technologies with practical business requirements. The implementation leveraged the robust infrastructure provided by SAP BTP while addressing real enterprise needs for secure and efficient document processing.
-              </p>
-              <p className="text-lg leading-relaxed">
-                The resulting system balances performance and usability, giving users powerful RAG capabilities without requiring in-depth AI knowledge. This approach has proven particularly valuable for teams dealing with large volumes of technical documentation and knowledge management challenges.
-              </p>
+              {/* Overview Text */}
+              {projectId === 'project1' && (
+                  <>
+                    <p className="text-lg leading-relaxed mb-4">
+                      Working on this project presented a unique opportunity to blend cutting-edge AI technologies with practical business requirements. The implementation leveraged the robust infrastructure provided by SAP BTP while addressing real enterprise needs for secure and efficient document processing.
+                    </p>
+                    <p className="text-lg leading-relaxed">
+                      The resulting system balances performance and usability, giving users powerful RAG capabilities without requiring in-depth AI knowledge. This approach has proven particularly valuable for teams dealing with large volumes of technical documentation and knowledge management challenges.
+                    </p>
+                  </>
+               )}
+               {projectId === 'project3' && (
+                    <p className="text-lg leading-relaxed mb-4">
+                        This Proof of Concept explored the automation potential of agentic workflows using LangGraph. By chaining together specialized AI agents, each leveraging different foundation services like vector search or web research, the system could perform complex analysis tasks autonomously, significantly reducing manual effort.
+                    </p>
+               )}
             </div>
-            <div className="bg-theme-card rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
-              [ Architecture Diagram ]
+            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 overflow-hidden p-4 min-h-[450px] flex items-center justify-center">
+              {/* Replace Mermaid diagrams with placeholder for all projects */}
+              <div className="w-full h-full flex items-center justify-center text-theme-secondary italic">
+                [ Architecture Diagram Placeholder ]
+              </div>
             </div>
           </div>
           
@@ -299,55 +383,66 @@ const ProjectDetail: React.FC = () => {
           </ul>
         </section>
 
-        {/* Challenge section with integrated screenshot */}
+        {/* Challenge and Approach sections side by side */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">The Challenge</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
-            <div className="md:col-span-3">
-              <p className="text-lg leading-relaxed mb-6">{project.challenge}</p>
-              <p className="text-lg leading-relaxed mb-6">
-                This challenge was further complicated by the need to handle various document formats, maintain data security according to corporate standards, and provide a user experience that non-technical stakeholders could easily navigate.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Traditional document search and retrieval methods were failing to meet these requirements, resulting in information silos and missed opportunities to leverage existing corporate knowledge. A new approach was needed that could understand document semantics beyond simple keyword matching.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Challenge Box */}
+            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 p-6">
+              <h2 className="text-2xl font-semibold mb-4 theme-gradient-text">The Challenge</h2>
+              <p className="text-lg leading-relaxed mb-4">{project.challenge}</p>
+              
+              {/* Project-specific challenge content */}
+              {projectId === 'project1' && (
+                <p className="text-lg leading-relaxed">
+                  Traditional document search systems couldn't understand document semantics beyond keywords, leading to information silos and inefficient knowledge retrieval. The solution needed to handle various document formats while maintaining enterprise-grade security and providing an intuitive user experience.
+                </p>
+              )}
+              
+              {projectId === 'project3' && (
+                <p className="text-lg leading-relaxed">
+                  The complexity of this challenge was magnified by the need to integrate multiple AI models, conduct real-time web research, maintain contextual awareness across the workflow, and ensure the final output was business-relevant and actionable for sales teams with tight timeframes.
+                </p>
+              )}
             </div>
-            <div className="md:col-span-2">
-              <div className="bg-theme-card theme-gradient-primary/10 rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
-                [ Dashboard Interface ]
+            
+            {/* Approach Box */}
+            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 p-6">
+              <h2 className="text-2xl font-semibold mb-4 theme-gradient-text">Our Approach</h2>
+              
+              {/* Project-specific approach content */}
+              {projectId === 'project1' && (
+                <p className="text-lg leading-relaxed mb-4">
+                  We developed a comprehensive RAG solution with a modular architecture that separates concerns between document processing, vector storage, and AI integration. We prioritized real-time communication, secure authentication, and an intuitive UX to ensure both technical excellence and user adoption.
+                </p>
+              )}
+              
+              {projectId === 'project3' && (
+                <p className="text-lg leading-relaxed mb-4">
+                  We designed an event-driven workflow using LangGraph that orchestrates specialized AI agents in a multi-step process. Each step builds on previous insights while leveraging the appropriate foundation service (web research, vector search, AI inference). The system provides real-time progress updates and handles asynchronous, potentially long-running tasks efficiently.
+                </p>
+              )}
+              
+              {/* Generic project approach */}
+              {projectId !== 'project1' && projectId !== 'project3' && (
+                <p className="text-lg leading-relaxed mb-4">
+                  Our solution addressed these challenges through careful architecture design, technology selection, and implementation methodology focused on both immediate needs and long-term maintainability.
+                </p>
+              )}
+              
+              <div className="mt-2">
+                {project.approach.slice(0, 4).map((point, index) => (
+                  <p key={index} className="text-base mb-3">
+                    <span className="font-medium theme-scandinavian:text-scandi-accent-primary text-accent-primary">• </span>
+                    {point}
+                  </p>
+                ))}
+                {project.approach.length > 4 && (
+                  <p className="text-sm italic text-theme-secondary mt-2">
+                    + {project.approach.length - 4} more strategies
+                  </p>
+                )}
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Approach section with reversed layout */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Our Approach</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
-            <div className="md:col-span-2 md:order-2">
-              <p className="text-lg leading-relaxed mb-6">
-                To address these challenges, we developed a comprehensive solution strategy that leveraged modern technologies and methodologies. We focused on creating a system that would not only solve the immediate problems but also be maintainable and extensible for future needs.
-              </p>
-              <p className="text-lg leading-relaxed">
-                The approach emphasized user experience while maintaining enterprise-grade performance. This balance was crucial for ensuring adoption across the organization while meeting the strict performance requirements of production environments.
-              </p>
-            </div>
-            <div className="md:col-span-3 md:order-1">
-              <div className="bg-theme-card rounded-lg flex items-center justify-center text-theme-secondary italic shadow-sm border border-theme/10 overflow-hidden aspect-[4/3]">
-                [ Data Processing Interface ]
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-8">
-            {project.approach.map((point, index) => (
-              <p key={index} className="text-lg mb-4">
-                <span className="font-medium theme-scandinavian:text-scandi-accent-primary text-accent-primary">{index + 1}. </span>
-                {point}
-              </p>
-            ))}
           </div>
         </section>
 
@@ -365,6 +460,12 @@ const ProjectDetail: React.FC = () => {
                     <pre className="text-sm overflow-x-auto">
                       <code className="font-mono">{section.codeExample}</code>
                     </pre>
+                  </div>
+                )}
+
+                {section.imagePath && (
+                  <div className="mt-4">
+                    <img src={section.imagePath} alt={section.title} className="w-full h-auto rounded-lg" />
                   </div>
                 )}
               </div>
@@ -392,6 +493,25 @@ const ProjectDetail: React.FC = () => {
           <p className="text-lg leading-relaxed">
             These outcomes represent not just technical achievements, but meaningful business impact that has transformed how the organization operates. The solution continues to evolve as new requirements emerge, built on the solid foundation established by this implementation.
           </p>
+
+          {/* Article footer - styled bottom button like the top one */}
+          <div className="mt-16 pt-8 border-t border-theme flex justify-start">
+            <button 
+              onClick={() => navigate('/projects')}
+              className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-5 w-5 transform group-hover:-translate-x-1 transition-transform" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-sm font-medium">Back to Projects</span>
+            </button>
+          </div>
         </section>
       </article>
     </motion.div>

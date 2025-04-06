@@ -344,10 +344,10 @@ const ThoughtDetail: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full h-full overflow-y-auto scrollbar-thin"
+      className="w-full h-full overflow-y-auto scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200"
     >
-      {/* Subtle back button at the top */}
-      <div className="absolute top-4 left-4 z-10">
+      {/* Subtle back button at the top - Increased z-index */}
+      <div className="absolute top-4 left-4 z-30">
         <button 
           onClick={() => navigate('/thoughts')}
           className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
@@ -414,13 +414,22 @@ const ThoughtDetail: React.FC = () => {
           {thought.content.map(renderContent)}
         </article>
 
-        {/* Article footer - removed share buttons */}
-        <div className="mt-16 pt-8 border-t border-theme flex justify-end">
+        {/* Article footer - styled bottom button like the top one */}
+        <div className="mt-16 pt-8 border-t border-theme flex justify-start">
           <button 
             onClick={() => navigate('/thoughts')}
-            className="px-6 py-2 bg-accent-primary text-white hover:bg-accent-secondary theme-scandinavian:bg-scandi-accent-primary theme-scandinavian:hover:bg-scandi-accent-secondary transition-colors rounded-lg"
+            className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
           >
-            Back to Thoughts
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5 transform group-hover:-translate-x-1 transition-transform" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="text-sm font-medium">Back to Thoughts</span>
           </button>
         </div>
       </div>

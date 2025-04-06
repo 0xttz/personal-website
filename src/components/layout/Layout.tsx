@@ -134,7 +134,10 @@ const AtmosphereControl = () => {
 
 // Simple NavLink component for styling active state
 const StyledNavLink = ({ to, children }: { to: string; children: React.ReactNode }) => {
-  const isActive = useLocation().pathname === to;
+  const location = useLocation();
+  // Check if the current path starts with the link's path
+  // Handle the base path '/' explicitly to avoid matching everything
+  const isActive = to === '/' ? location.pathname === to : location.pathname.startsWith(to);
   const { isScandinavian } = useTheme();
   
   return (
@@ -424,8 +427,8 @@ const Layout: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen h-screen bg-theme-background text-theme-primary px-2 sm:px-4 md:px-8 lg:px-16"> 
-      <div className="flex w-full h-full max-w-full max-h-[calc(100vh-4rem)]"> 
-        <nav className="w-68 flex-shrink-0 flex flex-col items-end pr-4 sm:pr-6 md:pr-8 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5"> 
+      <div className="flex w-full h-full max-w-full max-h-[calc(100vh-4rem)] overflow-visible"> 
+        <nav className="w-60 flex-shrink-0 flex flex-col items-end pr-2 sm:pr-3 md:pr-4 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5 bg-theme-background/40 backdrop-blur-sm rounded-l-xl"> 
           <div className="flex-grow w-full space-y-3 sm:space-y-4">
             <StyledNavLink to="/">Me</StyledNavLink>
             <StyledNavLink to="/projects">Projects</StyledNavLink>
@@ -439,7 +442,7 @@ const Layout: React.FC = () => {
 
         <main 
           ref={mainRef} 
-          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin ${location.pathname === '/' ? 'overflow-hidden' : 'overflow-y-auto'} flex flex-col w-full max-w-7xl mx-auto min-w-0 overflow-x-hidden h-full`}
+          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200 ${location.pathname.includes('/projects/') || location.pathname.includes('/thoughts/') ? 'overflow-y-auto' : 'overflow-hidden'} flex flex-col w-full max-w-7xl mx-auto min-w-0 overflow-x-hidden h-full`}
         > 
           <SocialBar />
           
@@ -463,7 +466,7 @@ const Layout: React.FC = () => {
           </AnimatePresence>
 
           <motion.div 
-            className="p-4 sm:p-6 md:p-8 flex-1"
+            className="flex-1"
             initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
