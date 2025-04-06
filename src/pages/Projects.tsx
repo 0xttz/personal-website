@@ -61,11 +61,9 @@ const getTileClasses = (size: string) => {
   switch (size) {
     case 'large':
       return 'md:col-span-2 md:row-span-2';
-    case 'medium':
-      return 'md:col-span-1 md:row-span-2';
     case 'small':
     default:
-      return 'md:col-span-1 md:row-span-1';
+      return 'md:col-span-1'; // Simplified: only large spans multiple columns/rows
   }
 };
 
@@ -96,15 +94,16 @@ const Projects: React.FC = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="flex flex-col h-full"
+      
       layoutId="page-content" // Ensure layout stability
+      className="h-full flex flex-col"
     >
       <h1 className={HeadingStyles.h1}>Projects</h1>
-      <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
+      <p className={`mt-2 mb-4 ${HeadingStyles.subtitle}`}>
         A collection of full-stack applications and AI-driven projects built during my professional experience at SAP and academic studies. As a tech-savvy business major exploring the intersection of technology and business value, these projects showcase my practical approach to solving real-world problems through code.
       </p>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-min md:auto-rows-fr gap-6 flex-grow">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow auto-rows-fr">
         {projectsData.map((project, index) => (
           <motion.a
             key={project.id}
@@ -115,12 +114,11 @@ const Projects: React.FC = () => {
             whileHover={{ y: -3, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             style={{ 
-              minHeight: project.size === 'small' ? '200px' : '280px',
               willChange: 'transform' // Performance hint
             }}
           >
-            {/* Border overlay with gradient */}
-            <div className="absolute inset-0 border border-theme rounded-lg overflow-hidden group-hover:border-theme transition-colors duration-300"></div>
+            {/* Border overlay */}
+            <div className="absolute inset-0 border border-theme rounded-lg group-hover:border-theme-hover transition-colors duration-300"></div>
             
             {project.imageOnly ? (
               // Image-only tile
@@ -130,10 +128,10 @@ const Projects: React.FC = () => {
             ) : project.hasImage ? (
               // Project with image
               <div className="h-full flex flex-col">
-                <div className={`h-1/2 theme-gradient-primary p-4 flex items-center justify-center`}>
+                <div className={`h-1/2 theme-gradient-primary p-2 flex items-center justify-center`}>
                   <p className="text-theme-primary/50 italic">[ Project Visual ]</p>
                 </div>
-                <div className="p-6 flex flex-col flex-grow bg-theme-background">
+                <div className="p-4 flex flex-col flex-grow bg-theme-background">
                   <h2 className="text-xl font-semibold theme-gradient-text mb-2">
                     {project.title}
                   </h2>
@@ -152,7 +150,7 @@ const Projects: React.FC = () => {
               </div>
             ) : (
               // Regular project tile
-              <div className="h-full p-6 flex flex-col bg-theme-background">
+              <div className="h-full p-4 flex flex-col bg-theme-background">
                 <h2 className="text-xl font-semibold theme-gradient-text mb-2">
                   {project.title}
                 </h2>

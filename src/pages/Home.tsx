@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   return (
     // Container to allow flex layout within the card
     <motion.div 
-      className="flex flex-col justify-between min-h-[calc(100vh-13rem)] text-text-primary"
+      className="text-text-primary h-full flex flex-col"
       variants={childVariants}
       initial="initial" 
       animate="animate" 
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
       <motion.div 
         variants={childVariants}
         initial={false}
-        className={`my-10 h-80 bg-gradient-to-br ${GradientStyles.primary} rounded-lg overflow-hidden shadow-md transition-all duration-500`}
+        className={`mt-6 mb-6 flex-grow bg-gradient-to-br ${GradientStyles.primary} rounded-lg overflow-hidden shadow-md transition-all duration-500`}
         style={{ willChange: 'transform, opacity' }}
       >
         <div className="w-full h-full flex items-center justify-center">

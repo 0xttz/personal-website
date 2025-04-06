@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaSun, FaMoon } from 'react-icons/fa';
@@ -193,7 +193,7 @@ export const useThemeStyles = () => {
           : 'after:from-accent-primary after:to-accent-secondary'}`,
       subtitle: `text-lg ${isScandinavian 
         ? 'text-scandi-text-secondary' 
-        : 'text-text-secondary'} max-w-3xl leading-relaxed`
+        : 'text-text-secondary'} leading-relaxed`
     },
     gradientStyles: {
       primary: isScandinavian 
@@ -314,7 +314,12 @@ const Layout: React.FC = () => {
   const [currentContent, setCurrentContent] = useState<string>(location.pathname);
   const { isScandinavian } = useTheme();
   const { headingStyles, gradientStyles } = useThemeStyles();
-  
+
+  // Ref for the main element
+  const mainRef = useRef<HTMLElement>(null);
+  // State for overlay dimensions
+  const [overlayStyle, setOverlayStyle] = useState({});
+
   // Helper to get page order number
   const getPageOrder = (path: string): number => {
     const page = NAV_ORDER.find(p => p.path === path);
@@ -379,6 +384,10 @@ const Layout: React.FC = () => {
           setIsTransitioning(false);
           setPreviousPathname(nextPathname);
           setNextPathname('');
+          // Reset scroll position of main content area
+          if (mainRef.current) {
+            mainRef.current.scrollTop = 0;
+          }
         }, 300); // Longer delay to ensure overlay fully exits after content loads
       }, 400); // Better timing coordinated with overlay animation
       
@@ -400,11 +409,23 @@ const Layout: React.FC = () => {
     }
   }, [location.pathname, previousPathname, isTransitioning]);
 
+  // Update overlay style when transition starts
+  useEffect(() => {
+    if (isTransitioning && mainRef.current) {
+      const rect = mainRef.current.getBoundingClientRect();
+      setOverlayStyle({ 
+        top: `${rect.top}px`, 
+        left: `${rect.left}px`, 
+        width: `${rect.width}px`, 
+        height: `${rect.height}px` 
+      });
+    }
+  }, [isTransitioning]);
+
   return (
-    <div className="flex justify-center items-start min-h-screen bg-theme-background text-theme-primary py-6 sm:py-10 md:py-16 lg:py-20 px-4 sm:px-8 md:px-16 lg:px-32"> 
-      <div className="flex w-full max-w-full"> 
-        {/* Nav column with reduced spacing to main content */} 
-        <nav className="w-68 flex-shrink-0 flex flex-col items-end pr-6 sm:pr-8 md:pr-10 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5 sticky top-12 sm:top-16 md:top-20 h-[calc(100vh-6rem)] sm:h-[calc(100vh-8rem)] md:h-[calc(100vh-10rem)]"> 
+    <div className="flex justify-center items-center min-h-screen h-screen bg-theme-background text-theme-primary px-2 sm:px-4 md:px-8 lg:px-16"> 
+      <div className="flex w-full h-full max-w-full max-h-[calc(100vh-4rem)]"> 
+        <nav className="w-68 flex-shrink-0 flex flex-col items-end pr-4 sm:pr-6 md:pr-8 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5"> 
           <div className="flex-grow w-full space-y-3 sm:space-y-4">
             <StyledNavLink to="/">Me</StyledNavLink>
             <StyledNavLink to="/projects">Projects</StyledNavLink>
@@ -416,12 +437,12 @@ const Layout: React.FC = () => {
           </div>
         </nav>
 
-        {/* Main content with improved shadow and rounded corners */}
-        <main className="flex-1 relative overflow-hidden rounded-xl shadow-2xl"> 
-          {/* Social media sidebar - positioned closer to main content */}
+        <main 
+          ref={mainRef} 
+          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin ${location.pathname === '/' ? 'overflow-hidden' : 'overflow-y-auto'} flex flex-col w-full max-w-7xl mx-auto min-w-0 overflow-x-hidden h-full`}
+        > 
           <SocialBar />
           
-          {/* Page transition overlay */}
           <AnimatePresence initial={false} custom={direction}>
             {isTransitioning && (
               <motion.div
@@ -431,40 +452,25 @@ const Layout: React.FC = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                style={{ 
+                className="fixed rounded-xl"
+                style={{
+                  ...overlayStyle,
                   backgroundColor: transitionColor,
                   zIndex: 30
                 }}
-                className="absolute inset-0 rounded-xl"
               />
             )}
           </AnimatePresence>
 
-          {/* Page content with AnimatePresence */}
-          <AnimatePresence initial={false} mode="wait">
-            <motion.div
-              key={currentContent}
-              variants={pageTransitionVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="absolute inset-0 rounded-xl shadow-xl origin-center overflow-hidden"
-              style={{ 
-                minHeight: 'calc(100vh - 6rem)',
-                willChange: 'transform, opacity'  // Better performance hint for the browser
-              }}
-            >
-              <motion.div 
-                className="h-full p-4 sm:p-8 md:p-12"
-                initial={false}  // Content shouldn't have its own initial animation
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+          <motion.div 
+            className="p-4 sm:p-6 md:p-8 flex-1"
+            initial={false}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
+          </motion.div>
         </main>
       </div>
     </div>

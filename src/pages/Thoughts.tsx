@@ -2,41 +2,34 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useOutletContext, Link } from 'react-router-dom';
 
-// Enhanced thoughts data with size information
+// Updated thoughts data
 const thoughtsData = [
   {
-    id: 1,
-    title: "On Building Products People Love",
-    date: "April 15, 2024",
-    summary: "Reflecting on the principles that guide exceptional product development - user-centered design, iterative processes, and finding the right balance between innovation and familiarity.",
-    tags: ["Product Design", "UX"],
-    size: "wide", // wide tile
+    id: 1, // Re-using ID for simplicity, ensure uniqueness if necessary
+    title: "Memory Persistence in LLMs",
+    date: "July 26, 2024", // Placeholder date
+    summary: "Exploring the challenges and potential solutions for enabling long-term memory in large language models.",
+    tags: ["AI", "LLM", "Memory"],
+    size: "wide",
   },
   {
-    id: 2,
-    title: "The Evolution of Frontend Development",
-    date: "March 28, 2024",
-    summary: "Tracking the significant shifts in frontend development from jQuery to modern frameworks, and exploring where we might be headed next.",
-    tags: ["Frontend", "Web Development"],
-    size: "normal", // normal tile
+    id: 2, // Re-using ID
+    title: "Vibe Coding as a Business Major",
+    date: "July 25, 2024", // Placeholder date
+    summary: "How intuition and 'vibe' play a role in coding, even from a non-traditional background.",
+    tags: ["Development", "Career", "Intuition"],
+    size: "normal",
   },
   {
-    id: 3,
-    title: "AI Tools in My Daily Workflow",
-    date: "March 10, 2024",
-    summary: "How I've incorporated various AI tools into my creative and development processes, and the impact they've had on productivity and creativity.",
-    tags: ["AI", "Productivity"],
-    size: "normal", // normal tile
-  },
-  {
-    id: 4,
-    title: "Visual Inspiration",
-    date: "February 20, 2024",
-    summary: "",
+    id: 3, // Re-using ID
+    title: "Conceptual Illustration",
+    date: "July 24, 2024", // Placeholder date
+    summary: "", // No summary for visual
     tags: [],
     size: "normal",
-    visualOnly: true
+    visualOnly: true // Mark as visual placeholder
   }
+  // Add more thoughts here as needed
 ];
 
 // Helper function to get classes based on article size
@@ -81,15 +74,15 @@ const Thoughts: React.FC = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="flex flex-col h-full"
+      className="h-full flex flex-col"
       layoutId="page-content" // Ensure layout stability
     >
       <h1 className={HeadingStyles.h1}>Thoughts</h1>
-      <p className={`mt-6 mb-10 ${HeadingStyles.subtitle}`}>
+      <p className={`mt-2 mb-4 ${HeadingStyles.subtitle}`}>
         A collection of essays and reflections on technology, design, and the digital landscape.
       </p>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow auto-rows-fr">
         {thoughtsData.map((thought, index) => (
           <Link to={thought.visualOnly ? '#' : `/thoughts/${thought.id}`} key={thought.id} className={`${getArticleClasses(thought.size)}`}>
             <motion.article 
@@ -101,7 +94,7 @@ const Thoughts: React.FC = () => {
               style={{ willChange: 'transform' }} // Performance hint
             >
               {/* Border gradient */}
-              <div className="absolute inset-0 border border-theme rounded-lg group-hover:border-theme transition-colors duration-500"></div>
+              <div className="absolute inset-0 border border-theme rounded-lg group-hover:border-theme-hover transition-colors duration-300"></div>
               
               {thought.visualOnly ? (
                 // Visual-only content with more subtle gradient
@@ -110,7 +103,7 @@ const Thoughts: React.FC = () => {
                 </div>
               ) : (
                 // Regular thought content
-                <div className="p-6 bg-theme-background">
+                <div className="p-4 bg-theme-background">
                   <div className="flex justify-between items-baseline mb-4">
                     <Link to={`/thoughts/${thought.id}`} className="block">
                       <h2 className="text-xl font-semibold theme-gradient-text transition-all duration-500">
