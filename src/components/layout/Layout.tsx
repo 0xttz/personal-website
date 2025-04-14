@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter, FaSun, FaMoon } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { SiLichess, SiGoodreads } from "react-icons/si";
 import { useTheme } from '../../context/ThemeContext';
+import Sidebar from './Sidebar';
 
 // Social media links component with hover effects - moved closer to main content
 const SocialBar = () => {
@@ -55,115 +56,6 @@ const SocialBar = () => {
   );
 };
 
-// Stylish atmosphere control for controlling theme
-const AtmosphereControl = () => {
-  const { isScandinavian, toggleTheme } = useTheme();
-  
-  return (
-    <motion.div 
-      className="relative flex flex-col items-end space-y-2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.3 }}
-    >
-      <span className="text-xs text-theme-secondary">Atmosphere</span>
-      <motion.button
-        onClick={toggleTheme}
-        className="group relative w-40 h-10 overflow-hidden rounded-md"
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        {/* Theme Gradient Background */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* Terracotta Theme */}
-          <div className={`absolute inset-0 transition-opacity duration-700 ease-in-out bg-gradient-to-r from-accent-primary/30 to-accent-secondary/40 ${isScandinavian ? 'opacity-0' : 'opacity-100'}`}></div>
-          {/* Scandinavian Theme */}
-          <div className={`absolute inset-0 transition-opacity duration-700 ease-in-out bg-gradient-to-r from-scandi-accent-primary/30 to-scandi-accent-secondary/40 ${isScandinavian ? 'opacity-100' : 'opacity-0'}`}></div>
-        </div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute inset-0 flex items-center justify-between px-4 transition-transform duration-500">
-          <motion.div
-            animate={{ 
-              opacity: isScandinavian ? 0.2 : 1,
-              scale: isScandinavian ? 0.8 : 1,
-              x: isScandinavian ? -8 : 0
-            }}
-            className="text-white"
-          >
-            {/* Desert/Terracotta icon - simplified and larger */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-          </motion.div>
-          
-          <motion.div
-            animate={{ 
-              opacity: isScandinavian ? 1 : 0.2,
-              scale: isScandinavian ? 1 : 0.8,
-              x: isScandinavian ? 0 : 8 
-            }}
-            className="text-white"
-          >
-            {/* Forest/Scandinavian icon - simplified and larger */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M8 19h8a4 4 0 0 0 0-8h-1a6.5 6.5 0 1 0-13 0 4 4 0 0 0 0 8h6Z"></path>
-              <path d="M12 19v3"></path>
-            </svg>
-          </motion.div>
-        </div>
-        
-        {/* Text Layer */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs font-medium text-white mix-blend-difference">
-            {isScandinavian ? "Scandinavian" : "Terracotta"}
-          </span>
-        </div>
-      </motion.button>
-    </motion.div>
-  );
-};
-
-// Simple NavLink component for styling active state
-const StyledNavLink = ({ to, children }: { to: string; children: React.ReactNode }) => {
-  const location = useLocation();
-  // Check if the current path starts with the link's path
-  // Handle the base path '/' explicitly to avoid matching everything
-  const isActive = to === '/' ? location.pathname === to : location.pathname.startsWith(to);
-  const { isScandinavian } = useTheme();
-  
-  return (
-    <NavLink
-      to={to}
-      className={`relative block text-right text-base transition-colors duration-200 ease-in-out py-3
-                 ${isActive 
-                   ? 'font-semibold ' + (isScandinavian ? 'text-scandi-accent-secondary' : 'text-accent-secondary')
-                   : 'font-medium text-theme-secondary hover:text-theme-primary'}`}
-    >
-      <span className="mr-6">{children}</span>
-      <span className="absolute right-0 top-1/2 -translate-y-1/2 h-3 w-3 flex items-center justify-center"> 
-        <motion.div 
-          className={`rounded-full ${isScandinavian 
-            ? 'bg-gradient-to-br from-scandi-accent-primary to-scandi-accent-secondary'
-            : 'bg-gradient-to-br from-accent-primary to-accent-secondary'}`}
-          animate={{ scale: isActive ? 1.6 : 0.8 }}
-          transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        >
-          <div className="h-1.5 w-1.5"></div> 
-        </motion.div>
-      </span>
-    </NavLink>
-  );
-};
-
 // Enhanced heading styles for use throughout the app
 export const HeadingStyles = {
   h1: "text-4xl font-bold bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent drop-shadow-sm",
@@ -183,9 +75,6 @@ export const GradientStyles = {
 // Dynamic heading styles
 export const useThemeStyles = () => {
   const { isScandinavian } = useTheme();
-  
-  // Reverted to original 2-color gradient
-  // const fromColor = 'from-stone-200'; 
   
   return {
     headingStyles: {
@@ -222,23 +111,23 @@ export const useThemeStyles = () => {
 
 // Page navigation order - used for determining animation direction
 export const NAV_ORDER = [
-  { path: '/', name: 'Me', order: 1 },
-  { path: '/projects', name: 'Projects', order: 2 },
-  { path: '/thoughts', name: 'Thoughts', order: 3 },
-  { path: '/recommendations', name: 'Recommendations', order: 4 }
+  { path: '/', name: 'me', order: 0 },
+  { path: '/projects', name: 'projects', order: 1 },
+  { path: '/thoughts', name: 'thoughts', order: 2 },
+  { path: '/recommendations', name: 'recommendations', order: 3 }
 ];
 
 // Page transition configuration
 interface PageConfig {
   path: string;
-  color: string;
+  gradient: string;
 }
 
 const pages: PageConfig[] = [
-  { path: '/', color: '#6A5ACD' },  // Purple for home/me
-  { path: '/projects', color: '#4682B4' }, // Steel blue for projects
-  { path: '/thoughts', color: '#4CAF50' }, // Green for thoughts
-  { path: '/recommendations', color: '#FF7043' }, // Orange for recommendations
+  { path: '/', gradient: 'linear-gradient(135deg, #e07a5f 0%, #9d4edd 100%)' },  // Bright terracotta to vibrant purple for home
+  { path: '/projects', gradient: 'linear-gradient(135deg, #f9844a 0%, #8338ec 100%)' }, // Vibrant orange to vibrant purple for projects
+  { path: '/thoughts', gradient: 'linear-gradient(135deg, #f8ad9d 0%, #4cc9f0 100%)' }, // Soft coral to bright cyan for thoughts
+  { path: '/recommendations', gradient: 'linear-gradient(135deg, #ffb4a2 0%, #b5179e 100%)' }, // Peachy pink to magenta for recommendations
 ];
 
 // Page transition animation with overlay
@@ -294,7 +183,7 @@ const overlayVariants: Variants = {
   }),
   animate: {
     y: '0%',
-    opacity: 0.95,
+    opacity: 0.98,
     transition: {
       duration: 0.4,
       ease: [0.33, 1, 0.68, 1],
@@ -317,7 +206,7 @@ const Layout: React.FC = () => {
   const [direction, setDirection] = useState<number>(0);
   const [previousPathname, setPreviousPathname] = useState<string>(location.pathname);
   const [nextPathname, setNextPathname] = useState<string>('');
-  const [transitionColor, setTransitionColor] = useState<string>('#6A5ACD');
+  const [transitionGradient, setTransitionGradient] = useState<string>('linear-gradient(135deg, #e07a5f 0%, #9d4edd 100%)');
   const [currentContent, setCurrentContent] = useState<string>(location.pathname);
   const { isScandinavian } = useTheme();
   const { headingStyles, gradientStyles } = useThemeStyles();
@@ -392,14 +281,16 @@ const Layout: React.FC = () => {
     const currentOrder = getPageOrder(location.pathname);
     const nextOrder = getPageOrder(to);
     
-    if (currentOrder > 0 && nextOrder > 0) {
-      // Moving "up" or "down" in navigation order
+    if (currentOrder !== undefined && nextOrder !== undefined) {
+      // Direction is now based strictly on numerical order: 
+      // Higher index to lower index = negative direction (up)
+      // Lower index to higher index = positive direction (down)
       const newDirection = nextOrder > currentOrder ? 1 : -1; 
       setDirection(newDirection);
       
-      // Find color for the page
+      // Find gradient for the page
       const pageConfig = pages.find(p => p.path === to);
-      setTransitionColor(pageConfig?.color || '#6A5ACD');
+      setTransitionGradient(pageConfig?.gradient || 'linear-gradient(135deg, #e07a5f 0%, #9d4edd 100%)');
       
       setNextPathname(to);
       setIsTransitioning(true);
@@ -429,9 +320,10 @@ const Layout: React.FC = () => {
   // Complete transition after overlay animation
   useEffect(() => {
     if (isTransitioning && nextPathname) {
-      // Keep the current content visible until navigation completes
+      // Delay navigating to the new route until overlay is fully visible
       const timer = setTimeout(() => {
         navigate(nextPathname);
+        // Only make new content visible after overlay starts to exit
         setTimeout(() => {
           setIsTransitioning(false);
           setPreviousPathname(nextPathname);
@@ -440,8 +332,8 @@ const Layout: React.FC = () => {
           if (mainRef.current) {
             mainRef.current.scrollTop = 0;
           }
-        }, 300); // Longer delay to ensure overlay fully exits after content loads
-      }, 400); // Better timing coordinated with overlay animation
+        }, 250); // Reduced delay to make content appear earlier
+      }, 350); // Reduced delay for quicker transition
       
       return () => clearTimeout(timer);
     }
@@ -453,7 +345,10 @@ const Layout: React.FC = () => {
       const prevOrder = getPageOrder(previousPathname);
       const currOrder = getPageOrder(location.pathname);
       
-      if (prevOrder > 0 && currOrder > 0) {
+      if (prevOrder !== undefined && currOrder !== undefined) {
+        // Consistent with handleNavigation logic:
+        // Higher index to lower index = negative direction (up)
+        // Lower index to higher index = positive direction (down)
         setDirection(currOrder > prevOrder ? 1 : -1);
       }
       
@@ -477,21 +372,11 @@ const Layout: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen h-screen bg-theme-background text-theme-primary px-2 sm:px-4 md:px-8 lg:px-16"> 
       <div className="flex w-full h-full max-w-full max-h-[calc(100vh-4rem)] overflow-visible"> 
-        <nav className="w-60 flex-shrink-0 flex flex-col items-end pr-2 sm:pr-3 md:pr-4 pt-4 sm:pt-6 md:pt-8 space-y-4 sm:space-y-5 bg-theme-background/40 backdrop-blur-sm rounded-l-xl"> 
-          <div className="flex-grow w-full space-y-3 sm:space-y-4">
-            <StyledNavLink to="/">Me</StyledNavLink>
-            <StyledNavLink to="/projects">Projects</StyledNavLink>
-            <StyledNavLink to="/thoughts">Thoughts</StyledNavLink>
-            <StyledNavLink to="/recommendations">Recommendations</StyledNavLink>
-          </div>
-          <div className="mb-2 sm:mb-4 flex justify-end">
-            <AtmosphereControl />
-          </div>
-        </nav>
+        <Sidebar />
 
         <main 
           ref={mainRef} 
-          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200 ${location.pathname.includes('/projects/') || location.pathname.includes('/thoughts/') ? 'overflow-y-auto' : 'overflow-hidden'} flex flex-col w-full max-w-7xl mx-auto min-w-0 overflow-x-hidden h-full`}
+          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200 ${location.pathname.includes('/projects/') || location.pathname.includes('/thoughts/') ? 'overflow-y-auto' : 'overflow-hidden'} flex flex-col w-full max-w-7xl mx-auto min-w-0 h-full`}
         > 
           <SocialBar />
           
@@ -507,8 +392,9 @@ const Layout: React.FC = () => {
                 className="fixed rounded-xl"
                 style={{
                   ...overlayStyle,
-                  backgroundColor: transitionColor,
-                  zIndex: 30
+                  background: transitionGradient,
+                  zIndex: 30,
+                  backdropFilter: "blur(3px)"
                 }}
               />
             )}
@@ -516,10 +402,10 @@ const Layout: React.FC = () => {
 
           <motion.div 
             className="flex-1"
-            initial={false}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isTransitioning ? 0 : 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, delay: isTransitioning ? 0 : 0.1 }}
           >
             <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
           </motion.div>

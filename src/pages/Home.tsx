@@ -80,7 +80,8 @@ const EnhancedSocialLink: React.FC<{
   color: string;
   index: number;
   triggerWaveAnimation: boolean;
-}> = ({ href, icon, children, color, index, triggerWaveAnimation }) => {
+  isWaveActive?: boolean;
+}> = ({ href, icon, children, color, index, triggerWaveAnimation, isWaveActive }) => {
   const controls = useAnimation();
   
   useEffect(() => {
@@ -97,7 +98,7 @@ const EnhancedSocialLink: React.FC<{
       return () => clearTimeout(animationTimeout);
     }
   }, [triggerWaveAnimation, controls, index, color]);
-  
+
   return (
     <motion.a 
       href={href} 
@@ -108,25 +109,25 @@ const EnhancedSocialLink: React.FC<{
     >
       {/* Background glow effect */}
       <span 
-        className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-md blur-sm"
+        className={`absolute inset-0 rounded-md blur-sm transition-opacity duration-300 ${isWaveActive ? 'opacity-10' : 'opacity-0'} group-hover:opacity-10`}
         style={{ backgroundColor: color }}
       ></span>
       
       {/* Border highlight */}
       <span 
-        className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 scale-105 group-hover:scale-110"
+        className={`absolute inset-0 rounded-md transition-all duration-300 scale-105 ${isWaveActive ? 'opacity-100 scale-110' : 'opacity-0'} group-hover:opacity-100 group-hover:scale-110`}
         style={{ 
           background: `linear-gradient(130deg, transparent 20%, ${color}40 40%, ${color}20 50%, transparent 70%)`,
         }}
       ></span>
       
       {/* Icon with rotation effect */}
-      <span className="transform transition-transform duration-300 mr-1.5 group-hover:scale-110 group-hover:-rotate-6">
+      <span className={`transform transition-transform duration-300 mr-1.5 ${isWaveActive ? 'scale-110 -rotate-6' : ''} group-hover:scale-110 group-hover:-rotate-6`}>
         {icon}
       </span>
       
       {/* Text with skew/rotation effect */}
-      <span className="transform transition-all duration-300 group-hover:scale-105 group-hover:rotate-1 group-hover:skew-x-1 group-hover:font-semibold"
+      <span className={`transform transition-all duration-300 ${isWaveActive ? 'scale-105 rotate-1 skew-x-1 font-semibold' : ''} group-hover:scale-105 group-hover:rotate-1 group-hover:skew-x-1 group-hover:font-semibold`}
             style={{ 
               textShadow: `0 0 0 transparent`,
               transition: 'all 0.3s ease',
@@ -198,6 +199,7 @@ const Home: React.FC = () => {
   const typingRef = useRef<HTMLHeadingElement>(null);
   const [typingComplete, setTypingComplete] = useState(false);
   const [triggerWaveAnimation, setTriggerWaveAnimation] = useState(false);
+  const [waveActiveIndex, setWaveActiveIndex] = useState<number | null>(null);
 
   const typingText = "Hey, I'm Lennard";
   const typeSpeed = 65;
@@ -206,11 +208,24 @@ const Home: React.FC = () => {
 
   // Add wave animation trigger after page load
   useEffect(() => {
+    const startDelay = 5000;
+    const waveInterval = 600; // ms between each start
+    const waveDuration = 900; // ms each stays active
+    let timeouts: NodeJS.Timeout[] = [];
+    const triggerWave = () => {
+      for (let i = 0; i < socialLinks.length; i++) {
+        timeouts.push(setTimeout(() => setWaveActiveIndex(i), i * waveInterval));
+        timeouts.push(setTimeout(() => setWaveActiveIndex(prev => (prev === i ? null : prev)), i * waveInterval + waveDuration));
+      }
+    };
     const timer = setTimeout(() => {
       setTriggerWaveAnimation(true);
-    }, 15000); // 15 seconds after load
-    
-    return () => clearTimeout(timer);
+      triggerWave();
+    }, startDelay);
+    return () => {
+      clearTimeout(timer);
+      timeouts.forEach(clearTimeout);
+    };
   }, []);
 
   useEffect(() => {
@@ -276,11 +291,11 @@ const Home: React.FC = () => {
 
   // Social link data in an array
   const socialLinks = [
-    { href: "https://www.linkedin.com/in/lennard-kaye-428103196/", icon: <FaLinkedin />, text: "connect", color: "#0077B5" },
-    { href: "https://x.com/0xKaramazov", icon: <FaTwitter />, text: "discuss ideas", color: "#1DA1F2" },
-    { href: "https://github.com/0xttz", icon: <FaGithub />, text: "building", color: "#333333" },
-    { href: "https://lichess.org/@/lfk99", icon: <SiLichess />, text: "chess", color: "#805129" },
-    { href: "https://www.goodreads.com/user/show/184384780-lennard-kaye", icon: <SiGoodreads />, text: "Goodreads", color: "#553b08" }
+    { href: "https://www.linkedin.com/in/lennard-kaye-428103196/", icon: <FaLinkedin />, text: "connect", color: "#003366" }, // dark blue
+    { href: "https://x.com/0xKaramazov", icon: <FaTwitter />, text: "discuss ideas", color: "#7FDBFF" }, // light blue
+    { href: "https://github.com/0xttz", icon: <FaGithub />, text: "building", color: "#8e44ad" }, // purple
+    { href: "https://lichess.org/@/lfk99", icon: <SiLichess />, text: "chess", color: "#FFD700" }, // goldish
+    { href: "https://www.goodreads.com/user/show/184384780-lennard-kaye", icon: <SiGoodreads />, text: "reading", color: "#27ae60" } // greenish
   ];
 
   // Paragraph content with updated social links using the array
@@ -288,7 +303,7 @@ const Home: React.FC = () => {
     <>Getting hands-on with ChatGPT in late '22 to me wasn't just interesting; it revealed a fundamental shift where AI significantly <strong className="font-bold text-accent">abstracts away layers of low-level complexity.</strong> This means <strong className="font-bold text-accent">learning and building are becoming much faster, more dynamic.</strong></>,
     <>I believe this future belongs to <Tintenstrich><strong className="font-bold">technologists</strong></Tintenstrich> – people with a wide technical toolkit and the agility to adapt and build quickly using AI. Building that versatility is my current focus in life.</>,
     <>Acting on this fully, I pivoted from my business studies, moved to Copenhagen to pursue a more technical Master's, and started spending most of my time learning and building with AI.</>,
-    <>Feel free to <EnhancedSocialLink href={socialLinks[0].href} icon={socialLinks[0].icon} color={socialLinks[0].color} index={0} triggerWaveAnimation={triggerWaveAnimation}>{socialLinks[0].text}</EnhancedSocialLink>, <EnhancedSocialLink href={socialLinks[1].href} icon={socialLinks[1].icon} color={socialLinks[1].color} index={1} triggerWaveAnimation={triggerWaveAnimation}>{socialLinks[1].text}</EnhancedSocialLink>, or check out what I'm <EnhancedSocialLink href={socialLinks[2].href} icon={socialLinks[2].icon} color={socialLinks[2].color} index={2} triggerWaveAnimation={triggerWaveAnimation}>{socialLinks[2].text}</EnhancedSocialLink>. I also enjoy a game of <EnhancedSocialLink href={socialLinks[3].href} icon={socialLinks[3].icon} color={socialLinks[3].color} index={3} triggerWaveAnimation={triggerWaveAnimation}>{socialLinks[3].text}</EnhancedSocialLink> or exploring new worlds on <EnhancedSocialLink href={socialLinks[4].href} icon={socialLinks[4].icon} color={socialLinks[4].color} index={4} triggerWaveAnimation={triggerWaveAnimation}>{socialLinks[4].text}</EnhancedSocialLink>.</>
+    <>Feel free to <EnhancedSocialLink href={socialLinks[0].href} icon={socialLinks[0].icon} color={socialLinks[0].color} index={0} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 0}>{socialLinks[0].text}</EnhancedSocialLink>, <EnhancedSocialLink href={socialLinks[1].href} icon={socialLinks[1].icon} color={socialLinks[1].color} index={1} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 1}>{socialLinks[1].text}</EnhancedSocialLink>, or check out what I'm <EnhancedSocialLink href={socialLinks[2].href} icon={socialLinks[2].icon} color={socialLinks[2].color} index={2} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 2}>{socialLinks[2].text}</EnhancedSocialLink>. I also enjoy a game of <EnhancedSocialLink href={socialLinks[3].href} icon={socialLinks[3].icon} color={socialLinks[3].color} index={3} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 3}>{socialLinks[3].text}</EnhancedSocialLink> and<EnhancedSocialLink href={socialLinks[4].href} icon={socialLinks[4].icon} color={socialLinks[4].color} index={4} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 4}>{socialLinks[4].text}</EnhancedSocialLink>.</>
   ];
 
   return (

@@ -9,7 +9,7 @@ export default {
       colors: {
         // Terracotta theme
         background: '#FDFBF7', // Very light beige
-        card: '#F5F0E8', // Warm off-white for content areas
+        card: '#fdefdb', // Warm off-white for content areas
         'text-primary': '#4E423D', // Deep brown
         'text-secondary': '#A1887F', // Muted terracotta
         'accent-primary': '#C87E68', // Rich terracotta/burnt orange
