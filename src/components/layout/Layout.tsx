@@ -184,11 +184,15 @@ export const GradientStyles = {
 export const useThemeStyles = () => {
   const { isScandinavian } = useTheme();
   
+  // Reverted to original 2-color gradient
+  // const fromColor = 'from-stone-200'; 
+  
   return {
     headingStyles: {
+      // Reverted h1 to use 2-stop gradient
       h1: `text-4xl font-bold bg-gradient-to-r ${isScandinavian 
-        ? 'from-scandi-accent-primary to-scandi-accent-secondary' 
-        : 'from-accent-primary to-accent-secondary'} bg-clip-text text-transparent drop-shadow-sm`,
+        ? `from-scandi-accent-primary to-scandi-accent-secondary` 
+        : `from-accent-primary to-accent-secondary`} bg-clip-text text-transparent drop-shadow-sm`,
       h2: `text-2xl font-semibold ${isScandinavian 
         ? 'bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary bg-clip-text text-transparent' 
         : 'bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent'} relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-1/3 after:h-0.5 after:bg-gradient-to-r ${isScandinavian 
@@ -322,6 +326,51 @@ const Layout: React.FC = () => {
   const mainRef = useRef<HTMLElement>(null);
   // State for overlay dimensions
   const [overlayStyle, setOverlayStyle] = useState({});
+
+  // Update document title and favicon based on current route and theme
+  useEffect(() => {
+    const currentPath = location.pathname;
+    let currentRouteName = 'Lennard Kaye'; // Default title
+    
+    const matchedRoute = NAV_ORDER.find(route => 
+      currentPath === route.path || (route.path !== '/' && currentPath.startsWith(route.path + '/'))
+    );
+
+    if (matchedRoute) {
+      currentRouteName = matchedRoute.name.toLowerCase();
+    } else if (currentPath === '/') {
+       const homeRoute = NAV_ORDER.find(route => route.path === '/');
+       if (homeRoute) {
+          currentRouteName = homeRoute.name.toLowerCase();
+       }
+    }
+    
+    document.title = currentRouteName;
+
+    // Update Favicon
+    const faviconLink = document.getElementById('favicon-link') as HTMLLinkElement | null;
+    if (faviconLink) {
+      const gradientId = `faviconGradient-${isScandinavian ? 'scandi' : 'terra'}`;
+      const colorStop1 = isScandinavian ? '#1C3B26' : '#C87E68'; // scandi-accent-primary : accent-primary
+      const colorStop2 = isScandinavian ? '#7B4F9B' : '#6A5ACD'; // scandi-accent-secondary : accent-secondary
+
+      // Use linearGradient matching the top-left to bottom-right direction (like bg-gradient-to-br)
+      const svgString = `
+        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${colorStop1}"/>
+              <stop offset="100%" stop-color="${colorStop2}"/>
+            </linearGradient>
+          </defs>
+          <circle cx="16" cy="16" r="14" fill="url(#${gradientId})"/>
+        </svg>
+      `;
+      const faviconDataUri = `data:image/svg+xml;base64,${btoa(svgString)}`;
+      faviconLink.href = faviconDataUri;
+    }
+
+  }, [location.pathname, isScandinavian]); // Re-run on path or theme change
 
   // Helper to get page order number
   const getPageOrder = (path: string): number => {
