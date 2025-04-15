@@ -56,7 +56,7 @@ const Thoughts: React.FC = () => {
       style={{
         backgroundImage: `url(${thoughtsBgUrl})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'center calc(50% + 70px)',
         backgroundRepeat: 'no-repeat',
       }}
     >
@@ -72,41 +72,45 @@ const Thoughts: React.FC = () => {
             key={thought.id}
             variants={childVariants}
             custom={index}
-            whileHover={{ y: -5, scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            className="relative w-full rounded-lg shadow-md hover:shadow-lg transition-all duration-300 bg-theme-card group"
+            className="relative w-full rounded-lg shadow-md transition-all duration-300 bg-theme-card group"
             style={{ willChange: 'transform' }}
           >
-            {/* Border overlay */}
-            <div className="absolute inset-0 border border-theme rounded-lg group-hover:border-theme-hover transition-colors duration-300 pointer-events-none"></div>
+            {/* Border overlay (optional, could be moved to Link if preferred) */}
+            <div className="absolute inset-0 border border-theme rounded-lg transition-colors duration-300 pointer-events-none"></div>
             
-            {/* Interactive gradient overlay on hover */}
-            <div className="absolute inset-0 opacity-0 bg-gradient-to-br from-accent-primary/5 to-accent-secondary/5 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-            
-            {/* Content linked to the detail page */}
-            <Link to={`/thoughts/${thought.id}`} className="block w-full h-full">
-              <div className="p-6">
-                <div className="flex justify-between items-baseline mb-4">
-                  <h2 className="text-xl font-semibold theme-gradient-text transition-all duration-500">
-                    {thought.title}
-                  </h2>
-                  <span className="text-sm text-theme-secondary">{thought.date}</span>
+            {/* Wrap Link in motion.div for hover/tap animations */}
+            <motion.div
+              className="block w-full h-full" // Ensure wrapper fills space
+              whileHover={{ scale: 1.01, transition: { duration: 0.2, ease: "easeOut" } }}
+              whileTap={{ scale: 0.99 }}
+            >
+              <Link 
+                to={`/thoughts/${thought.id}`} 
+                className="relative block w-full h-full transition-all duration-300 rounded-lg group-hover:bg-white/10 group-hover:shadow-inner group-hover:shadow-theme-secondary/10"
+              >
+                <div className="p-4">
+                  <div className="flex justify-between items-baseline mb-4">
+                    <h2 className="text-xl font-semibold theme-gradient-text transition-all duration-500">
+                      {thought.title}
+                    </h2>
+                    <span className="text-sm text-theme-secondary">{thought.date}</span>
+                  </div>
+                  
+                  <p className="text-theme-secondary mb-4">{thought.summary}</p>
+                  
+                  <div className="flex gap-2 mt-4">
+                    {thought.tags.map(tag => (
+                      <span 
+                        key={tag} 
+                        className="text-xs bg-accent-primary/10 text-accent-primary theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary px-2 py-1 rounded transition-all duration-500"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                
-                <p className="text-theme-secondary mb-4">{thought.summary}</p>
-                
-                <div className="flex gap-2 mt-4">
-                  {thought.tags.map(tag => (
-                    <span 
-                      key={tag} 
-                      className="text-xs bg-accent-primary/10 text-accent-primary theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary px-2 py-1 rounded transition-all duration-500"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           </motion.div>
         ))}
       </div>

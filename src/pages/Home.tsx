@@ -300,10 +300,10 @@ const Home: React.FC = () => {
 
   // Paragraph content with updated social links using the array
   const paragraphs = [
-    <>Getting hands-on with ChatGPT in late '22 to me wasn't just interesting; it revealed a fundamental shift where AI significantly <strong className="font-bold text-accent">abstracts away layers of low-level complexity.</strong> This means <strong className="font-bold text-accent">learning and building are becoming much faster, more dynamic.</strong></>,
-    <>I believe this future belongs to <Tintenstrich><strong className="font-bold">technologists</strong></Tintenstrich> – people with a wide technical toolkit and the agility to adapt and build quickly using AI. Building that versatility is my current focus in life.</>,
+    <>Using ChatGPT 3.5 in late '22 wasn't just exciting to me; to me it immediately revealed a fundamental shift in technology where improving genAI would increasingly <strong className="font-bold text-accent">abstract away layers of low-level complexity.</strong> As a result, <strong className="font-bold text-accent">learning and building are becoming much faster, more dynamic.</strong></>,
+    <>I believe this future belongs to <Tintenstrich><strong className="font-bold">technologists</strong></Tintenstrich> – people with a wide technical skillset and the agility to create and iterate quickly using AI. Building that versatility is my current focus in life.</>,
     <>Acting on this fully, I pivoted from my business studies, moved to Copenhagen to pursue a more technical Master's, and started spending most of my time learning and building with AI.</>,
-    <>Feel free to <EnhancedSocialLink href={socialLinks[0].href} icon={socialLinks[0].icon} color={socialLinks[0].color} index={0} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 0}>{socialLinks[0].text}</EnhancedSocialLink>, <EnhancedSocialLink href={socialLinks[1].href} icon={socialLinks[1].icon} color={socialLinks[1].color} index={1} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 1}>{socialLinks[1].text}</EnhancedSocialLink>, or check out what I'm <EnhancedSocialLink href={socialLinks[2].href} icon={socialLinks[2].icon} color={socialLinks[2].color} index={2} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 2}>{socialLinks[2].text}</EnhancedSocialLink>. I also enjoy a game of <EnhancedSocialLink href={socialLinks[3].href} icon={socialLinks[3].icon} color={socialLinks[3].color} index={3} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 3}>{socialLinks[3].text}</EnhancedSocialLink> and<EnhancedSocialLink href={socialLinks[4].href} icon={socialLinks[4].icon} color={socialLinks[4].color} index={4} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 4}>{socialLinks[4].text}</EnhancedSocialLink>.</>
+    <>Feel free to <EnhancedSocialLink href={socialLinks[0].href} icon={socialLinks[0].icon} color={socialLinks[0].color} index={0} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 0}>{socialLinks[0].text}</EnhancedSocialLink>, <EnhancedSocialLink href={socialLinks[1].href} icon={socialLinks[1].icon} color={socialLinks[1].color} index={1} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 1}>{socialLinks[1].text}</EnhancedSocialLink>, or check out what I'm <EnhancedSocialLink href={socialLinks[2].href} icon={socialLinks[2].icon} color={socialLinks[2].color} index={2} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 2}>{socialLinks[2].text}</EnhancedSocialLink>. I also <br />   enjoy a game of <EnhancedSocialLink href={socialLinks[3].href} icon={socialLinks[3].icon} color={socialLinks[3].color} index={3} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 3}>{socialLinks[3].text}</EnhancedSocialLink> and<EnhancedSocialLink href={socialLinks[4].href} icon={socialLinks[4].icon} color={socialLinks[4].color} index={4} triggerWaveAnimation={triggerWaveAnimation} isWaveActive={waveActiveIndex === 4}>{socialLinks[4].text}</EnhancedSocialLink>.</>
   ];
 
   return (
@@ -313,15 +313,15 @@ const Home: React.FC = () => {
       animate="animate"
       exit="exit"
       layoutId="page-content"
-      className={`custom-font p-8 sm:p-16 md:p-20 flex flex-col justify-start h-full overflow-hidden relative bg-gradient-to-br ${GradientStyles.primary} animate-gradient-xy`}
-      style={{ backgroundImage: `url(${homeBgUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+      className={`custom-font p-6 sm:p-10 md:p-12 flex flex-col justify-start h-full overflow-hidden relative bg-gradient-to-br ${GradientStyles.primary} animate-gradient-xy`}
+      style={{ backgroundImage: `url(${homeBgUrl})`, backgroundSize: 'cover', backgroundPosition: 'center 60%', backgroundRepeat: 'no-repeat' }}
     > 
       {/* Content Layer */}
-      <div className="relative z-10 mx-auto space-y-10 flex-grow flex flex-col justify-center">
+      <div className="relative z-10 mx-auto space-y flex-grow flex flex-col justify-center">
         {/* Header with improved positioning */}
         <h1
           ref={typingRef}
-          className={`artistic-font ${HeadingStyles.h1} text-5xl md:text-6xl mb-6 min-h-[1.5em] tracking-tight ml-4 sm:ml-8 md:ml-16`}
+          className={`artistic-font ${HeadingStyles.h1} text-5xl md:text-6xl mb-2 min-h-[1.5em] tracking-tight ml-4 sm:ml-8 md:ml-16`}
           style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.1)' }}
         >
            {/* Populated by useEffect */}
@@ -331,7 +331,7 @@ const Home: React.FC = () => {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 0.2, duration: 0.5 } }}
-          className="artistic-font space-y-14 text-lg md:text-xl text-text-primary leading-relaxed md:leading-loose" 
+          className="artistic-font space-y-8 text-sm md:text-base text-text-primary leading-relaxed md:leading-loose" 
         >
           {/* First paragraph - Left aligned with indentation */}
           <motion.p
@@ -365,31 +365,29 @@ const Home: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0, transition: { delay: 0.75, duration: 0.5 } }}
             className="max-w-3xl"
-            style={{ marginLeft: '-105px' }}
+            style={{ marginLeft: '-70px' }}
           >
             {paragraphs[3]}
           </motion.p>
         </motion.div>
       </div>
 
-      {/* Bottom Section: Status Card - Softer colors with better readability and darker fade */}
+      {/* Bottom Section: Status Card - Adjusted height and background */}
       <motion.div 
         initial={{ opacity: 1 }} 
         exit={{ opacity: 0 }} 
-        className="relative mt-auto -mx-8 sm:-mx-16 md:-mx-20 -mb-8 sm:-mb-16 md:-mb-20"
+        className="relative mt-auto -mx-6 sm:-mx-10 md:-mx-12 -mb-6 sm:-mb-10 md:-mb-12"
       >
-        <div className="relative p-6 shadow-md text-center overflow-hidden w-full rounded-t-lg bg-gradient-to-b from-white/80 to-white/60 backdrop-blur-sm border-t border-accent-primary/20">
-          {/* Darker Overlay Layer */}
-          <div className="absolute inset-0 bg-black/10 z-0"></div>
-          
+        {/* Reduced padding (p-2), applied theme soft gradient, removed black overlay */}
+        <div className={`relative p-2 shadow-md text-center overflow-hidden w-full rounded-t-lg bg-gradient-to-b ${GradientStyles.soft} backdrop-blur-sm border-t border-accent-primary/20`}>
           {/* Content Layer */}
           <div className="relative z-10 max-w-3xl mx-auto">
             <h2 className="artistic-font text-2xl font-semibold text-text-primary relative inline-block">
               Current Status
               <span className="absolute -bottom-1 left-0 w-1/3 h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary"></span>
             </h2> 
-            <p className="mt-3 text-text-secondary artistic-font whitespace-nowrap font-medium">
-              As I graduate this summer, I'm actively looking for an exciting job in tech starting in Fall 2025.
+            <p className="mt-2 text-theme-primary artistic-font font-medium">
+              As I graduate this summer, I'm actively looking for roles between tech and business that let me further my skills while working on interesting topics.
             </p>
           </div>
         </div>

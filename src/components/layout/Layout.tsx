@@ -6,6 +6,10 @@ import { SiLichess, SiGoodreads } from "react-icons/si";
 import { useTheme } from '../../context/ThemeContext';
 import Sidebar from './Sidebar';
 
+// Import OverlayScrollbars
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import 'overlayscrollbars/overlayscrollbars.css'; // Import base CSS
+
 // Social media links component with hover effects - moved closer to main content
 const SocialBar = () => {
   const { isScandinavian } = useTheme();
@@ -78,16 +82,18 @@ export const useThemeStyles = () => {
   
   return {
     headingStyles: {
-      // Reverted h1 to use 2-stop gradient
-      h1: `text-4xl font-bold bg-gradient-to-r ${isScandinavian 
+      // Reduced font size from text-4xl
+      h1: `text-3xl font-bold bg-gradient-to-r ${isScandinavian 
         ? `from-scandi-accent-primary to-scandi-accent-secondary` 
         : `from-accent-primary to-accent-secondary`} bg-clip-text text-transparent drop-shadow-sm`,
-      h2: `text-2xl font-semibold ${isScandinavian 
+      // Reduced font size from text-2xl
+      h2: `text-xl font-semibold ${isScandinavian 
         ? 'bg-gradient-to-r from-scandi-accent-primary to-scandi-accent-secondary bg-clip-text text-transparent' 
-        : 'bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent'} relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-1/3 after:h-0.5 after:bg-gradient-to-r ${isScandinavian 
+        : 'bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent'} relative inline-block after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:w-1/3 after:h-px after:bg-gradient-to-r ${isScandinavian 
           ? 'after:from-scandi-accent-primary after:to-scandi-accent-secondary' 
-          : 'after:from-accent-primary after:to-accent-secondary'}`,
-      subtitle: `text-lg ${isScandinavian 
+          : 'after:from-accent-primary after:to-accent-secondary'}`, // Adjusted underline position/thickness
+      // Reduced font size from text-lg
+      subtitle: `text-base ${isScandinavian 
         ? 'text-scandi-text-secondary' 
         : 'text-text-secondary'} leading-relaxed`
     },
@@ -278,24 +284,33 @@ const Layout: React.FC = () => {
   const handleNavigation = (to: string) => {
     if (to === location.pathname || isTransitioning) return;
     
+    // Check if navigating to a detail page (project or thought)
+    const isProjectDetail = to.startsWith('/projects/') && to !== '/projects';
+    const isThoughtDetail = to.startsWith('/thoughts/') && to !== '/thoughts';
+    const isDetailPage = isProjectDetail || isThoughtDetail;
+
+    if (isDetailPage) {
+      // For detail pages, navigate directly without custom transition
+      navigate(to);
+      return; // Stop further processing
+    }
+
+    // For main pages, proceed with custom transition logic
     const currentOrder = getPageOrder(location.pathname);
     const nextOrder = getPageOrder(to);
     
     if (currentOrder !== undefined && nextOrder !== undefined) {
-      // Direction is now based strictly on numerical order: 
-      // Higher index to lower index = negative direction (up)
-      // Lower index to higher index = positive direction (down)
-      const newDirection = nextOrder > currentOrder ? 1 : -1; 
+      const newDirection = nextOrder > currentOrder ? 1 : -1;
       setDirection(newDirection);
       
-      // Find gradient for the page
-      const pageConfig = pages.find(p => p.path === to);
-      setTransitionGradient(pageConfig?.gradient || 'linear-gradient(135deg, #e07a5f 0%, #9d4edd 100%)');
+      // Set transition gradient to Beige/Orange -> Deeper Purple
+      const newGradient = 'linear-gradient(135deg, #F5CBA7 0%, #A1887F 100%)'; // Beige/Orange to Deeper Purple
+      setTransitionGradient(newGradient);
       
       setNextPathname(to);
       setIsTransitioning(true);
     } else {
-      // Fallback for unknown routes
+      // Fallback for unknown or non-ordered routes (should ideally not happen for main nav)
       navigate(to);
     }
   };
@@ -370,45 +385,72 @@ const Layout: React.FC = () => {
   }, [isTransitioning]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen h-screen bg-theme-background text-theme-primary px-2 sm:px-4 md:px-8 lg:px-16"> 
-      <div className="flex w-full h-full max-w-full max-h-[calc(100vh-4rem)] overflow-visible"> 
+    <div className="flex justify-center items-center min-h-screen h-screen bg-theme-background text-theme-primary px-2 sm:px-4 md:px-8 lg:px-16">
+      <div className="flex w-full h-full max-w-full max-h-[calc(100vh-1rem)] overflow-visible">
         <Sidebar />
 
-        <main 
-          ref={mainRef} 
-          className={`flex-1 relative rounded-xl shadow-2xl scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50 transition-colors duration-200 ${location.pathname.includes('/projects/') || location.pathname.includes('/thoughts/') ? 'overflow-y-auto' : 'overflow-hidden'} flex flex-col w-full max-w-7xl mx-auto min-w-0 h-full`}
-        > 
-          <SocialBar />
-          
-          <AnimatePresence initial={false} custom={direction}>
-            {isTransitioning && (
-              <motion.div
-                key="page-transition-overlay"
-                custom={direction}
-                variants={overlayVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="fixed rounded-xl"
-                style={{
-                  ...overlayStyle,
-                  background: transitionGradient,
-                  zIndex: 30,
-                  backdropFilter: "blur(3px)"
-                }}
-              />
-            )}
-          </AnimatePresence>
-
-          <motion.div 
-            className="flex-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isTransitioning ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, delay: isTransitioning ? 0 : 0.1 }}
+        <main
+          ref={mainRef}
+          // Remove scrollbar utilities, keep overflow-hidden as OverlayScrollbars handles scroll
+          className={`flex-1 relative rounded-xl shadow-2xl 
+                     overflow-hidden // Hide native scrollbar completely
+                     flex flex-col w-full max-w-7xl mx-auto min-w-0 h-full`}
+        >
+          {/* Wrap scrollable content with OverlayScrollbarsComponent */}
+          <OverlayScrollbarsComponent
+            element="div" // Use a div as the wrapper
+            options={{
+              scrollbars: {
+                // theme: 'os-theme-light', // Example: Use a built-in theme or create custom
+                autoHide: 'scroll', // 'move', 'leave', 'never'
+                // Hide the track but show the thumb
+                visibility: 'auto',
+                clickScroll: true,
+              },
+              // Ensure content keeps padding etc.
+              paddingAbsolute: true,
+              // Customize appearance further if needed via className or styles
+              // className: 'os-theme-minimal-dark' // Example custom theme class
+            }}
+            // Apply necessary layout classes to the wrapper
+            className="h-full w-full flex-grow"
+            defer // Defer initialization for performance
           >
-            <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
-          </motion.div>
+            {/* All content that needs scrolling goes inside here */}
+            <div className="relative flex flex-col flex-grow h-full">
+              <SocialBar />
+
+              <AnimatePresence initial={false} custom={direction}>
+                {isTransitioning && (
+                  <motion.div
+                    key="page-transition-overlay"
+                    custom={direction}
+                    variants={overlayVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    className="fixed rounded-xl"
+                    style={{
+                      ...overlayStyle,
+                      background: transitionGradient,
+                      zIndex: 30,
+                      backdropFilter: "blur(3px)",
+                    }}
+                  />
+                )}
+              </AnimatePresence>
+
+              <motion.div
+                className="flex-1 flex flex-col p-0 m-0" // Ensure this takes up space
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isTransitioning ? 0 : 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, delay: isTransitioning ? 0 : 0.1 }}
+              >
+                <Outlet context={{ childVariants, HeadingStyles: headingStyles, GradientStyles: gradientStyles }} />
+              </motion.div>
+            </div>
+          </OverlayScrollbarsComponent>
         </main>
       </div>
     </div>

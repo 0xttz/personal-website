@@ -171,4 +171,65 @@
   }
 }
 
+/* --- Add OverlayScrollbars Customization Below --- */
+
+/* Base style for the scrollbar handle (thumb) */
+.os-scrollbar-handle {
+  /* Modern look: rounded corners */
+  border-radius: 10px;
+  /* Default theme (Terracotta) - Use RGBA */
+  background: linear-gradient(
+    135deg,
+    rgba(200, 126, 104, 0.5), /* accent-primary at 50% opacity */
+    rgba(106, 90, 205, 0.5)  /* accent-secondary at 50% opacity */
+  ) !important; 
+  opacity: 0.75;
+}
+
+/* Hover effect for the handle */
+.os-scrollbar-handle:hover {
+  opacity: 0.95;
+  /* Default theme hover - Use RGBA */
+  background: linear-gradient(
+    135deg,
+    rgba(200, 126, 104, 0.7), /* accent-primary at 70% opacity */
+    rgba(106, 90, 205, 0.7)  /* accent-secondary at 70% opacity */
+  ) !important;
+}
+
+/* Scandinavian theme specific styles */
+.theme-scandinavian .os-scrollbar-handle {
+  /* Use Scandinavian accent colors with RGBA */
+  background: linear-gradient(
+    135deg,
+    rgba(28, 59, 38, 0.5),   /* scandi-accent-primary at 50% opacity */
+    rgba(123, 79, 155, 0.5) /* scandi-accent-secondary at 50% opacity */
+  ) !important;
+}
+
+.theme-scandinavian .os-scrollbar-handle:hover {
+   opacity: 0.95;
+   /* Scandinavian theme hover - Use RGBA */
+   background: linear-gradient(
+    135deg,
+    rgba(28, 59, 38, 0.7),   /* scandi-accent-primary at 70% opacity */
+    rgba(123, 79, 155, 0.7) /* scandi-accent-secondary at 70% opacity */
+  ) !important;
+}
+
+/* Ensure vertical scrollbar handle doesn't get too thin */
+.os-scrollbar-vertical > .os-scrollbar-track > .os-scrollbar-handle {
+  min-height: 30px;
+}
+
+/* Ensure horizontal scrollbar handle doesn't get too thin */
+.os-scrollbar-horizontal > .os-scrollbar-track > .os-scrollbar-handle {
+  min-width: 30px;
+}
+
+/* Hide the track completely */
+.os-scrollbar-track {
+  background-color: transparent !important;
+}
+
 /* Removed default Vite styles below */

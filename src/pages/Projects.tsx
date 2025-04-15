@@ -2,6 +2,9 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
 
+// Path to background image
+const projectsBgUrl = 'src/assets/projects.png';
+
 // Updated project data for the main projects page
 const mainProjectsData = [
   {
@@ -76,25 +79,32 @@ const Projects: React.FC = () => {
       initial="initial"
       animate="animate"
       exit="exit"
-      
       layoutId="page-content" // Ensure layout stability
+      style={{
+        backgroundImage: `url(${projectsBgUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
-      <h1 className={HeadingStyles.h1}>Projects</h1>
+      <h1 className={`${HeadingStyles.h1} lowercase`}>projects</h1>
       <p className={`mt-2 mb-4 ${HeadingStyles.subtitle}`}>
-        A collection of full-stack applications and AI-driven projects built during my professional experience at SAP and academic studies. As a tech-savvy business major exploring the intersection of technology and business value, these projects showcase my practical approach to solving real-world problems through code.
+        Throughout the past 2 years, I have built a variety of projects both as part of my job at SAP, during my studies and in my free time. Some of these projects are showcased here.
       </p>
       
-      {/* Updated Grid Layout: Fills remaining space, prevents grid scroll */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-0"> {/* Removed auto-rows-fr, added min-h-0 */}
+      {/* Grid Layout: Reduced gap */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 lg:gap-5 xl:gap-6 flex-grow min-h-0">
         {mainProjectsData.map((project, index) => (
           <motion.a
             key={project.id}
-            href={project.link} // Use the link directly
+            href={project.link} 
             variants={childVariants}
             custom={index}
-            // Apply specific height for the full-width tile (made slimmer), keep others auto
-            className={`${getTileClasses(project.size)} relative group overflow-hidden rounded-lg hover:shadow-lg transition-all duration-300 ${project.size === 'full-width' ? 'h-40' : ''}`} // Changed h-48 to h-40
-            whileHover={{ y: -3, scale: 1.01 }}
+            // Conditional styling: Apply standard style or distinct style for 'Other Projects'
+            className={`${getTileClasses(project.size)} relative group overflow-hidden rounded-lg hover:shadow-lg transition-all duration-300 
+                       ${project.id === 'other-projects' ? `bg-gradient-to-br ${GradientStyles.soft}` : 'bg-theme-card'}`}
+            // Conditional hover animation
+            whileHover={ project.id === 'other-projects' ? { y: -3 } : { y: -3, scale: 1.01 } }
             whileTap={{ scale: 0.99 }}
             style={{ 
               willChange: 'transform' // Performance hint
@@ -129,21 +139,26 @@ const Projects: React.FC = () => {
                 </div>
               </div>
             ) : (
-              // Regular project tile (Other Projects Tile)
-              <div className="h-full p-4 flex flex-col justify-center bg-theme-background"> {/* Center content vertically */}
-                <h2 className="text-xl font-semibold theme-gradient-text mb-2">
-                  {project.title}
-                </h2>
-                <p className="text-theme-secondary mb-4">{project.description}</p> 
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {project.tech.map(tech => (
-                    <span 
-                      key={tech} 
-                      className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded theme-scandinavian:bg-gradient-to-r theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10 theme-scandinavian:text-scandi-accent-primary"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+              // Other Projects Tile - Added inner overlay for readability
+              <div className={`relative h-full p-3 lg:p-4 flex flex-col justify-center overflow-hidden rounded-lg`}>
+                {/* Increased overlay opacity */}
+                <div className="absolute inset-0 bg-black/15 z-0"></div> 
+                {/* Content Wrapper */}
+                <div className="relative z-10">
+                  <h2 className="text-xl font-semibold theme-gradient-text mb-2">
+                    {project.title}
+                  </h2>
+                  <p className="text-theme-secondary mb-4">{project.description}</p> 
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {project.tech.map(tech => (
+                      <span 
+                        key={tech} 
+                        className="text-xs bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 text-accent-primary px-2 py-1 rounded theme-scandinavian:bg-gradient-to-r theme-scandinavian:from-scandi-accent-primary/10 theme-scandinavian:to-scandi-accent-secondary/10 theme-scandinavian:text-scandi-accent-primary"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
