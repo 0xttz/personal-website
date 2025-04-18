@@ -5,17 +5,7 @@ import { useOutletContext, Link } from 'react-router-dom';
 // Path to background image
 const thoughtsBgUrl = 'src/assets/thoughts.png';
 
-// Updated thoughts data for list view
-const thoughtsData = [
-  {
-    id: 1,
-    title: "Abundance of Everything",
-    date: "April 18, 2025",
-    summary: "The abundance of everything is a reality that we must face.",
-    tags: ["Career", "Society"],
-  },
-  // Add more thoughts here as needed
-];
+// Removed thoughtsData array
 
 // Context type for type checking
 interface ContextType {
@@ -58,54 +48,12 @@ const Thoughts: React.FC = () => {
         I recently started putting my thoughts on technology, society and personal reflections into essays that I collect here.
       </p>
       
-      {/* Changed from grid to flex column with spacing */}
-      <div className="flex flex-col space-y-6 overflow-y-auto flex-grow pr-2 scrollbar-thin scrollbar-thumb-theme-secondary/30 scrollbar-track-transparent hover:scrollbar-thumb-theme-secondary/50">
-        {thoughtsData.map((thought, index) => (
-          <motion.div
-            key={thought.id}
-            variants={childVariants}
-            custom={index}
-            className="relative w-full rounded-lg shadow-md transition-all duration-300 bg-theme-card group"
-            style={{ willChange: 'transform' }}
-          >
-            {/* Border overlay (optional, could be moved to Link if preferred) */}
-            <div className="absolute inset-0 border border-theme rounded-lg transition-colors duration-300 pointer-events-none"></div>
-            
-            {/* Wrap Link in motion.div for hover/tap animations */}
-            <motion.div
-              className="block w-full h-full" // Ensure wrapper fills space
-              whileHover={{ scale: 1.01, transition: { duration: 0.2, ease: "easeOut" } }}
-              whileTap={{ scale: 0.99 }}
-            >
-              <Link 
-                to={`/thoughts/${thought.id}`} 
-                className="relative block w-full h-full transition-all duration-300 rounded-lg group-hover:bg-white/10 group-hover:shadow-inner group-hover:shadow-theme-secondary/10"
-              >
-                <div className="p-4">
-                  <div className="flex justify-between items-baseline mb-4">
-                    <h2 className="text-xl font-semibold theme-gradient-text transition-all duration-500">
-                      {thought.title}
-                    </h2>
-                    <span className="text-sm text-theme-secondary">{thought.date}</span>
-                  </div>
-                  
-                  <p className="text-theme-secondary mb-4">{thought.summary}</p>
-                  
-                  <div className="flex gap-2 mt-4">
-                    {thought.tags.map(tag => (
-                      <span 
-                        key={tag} 
-                        className="text-xs bg-accent-primary/10 text-accent-primary theme-scandinavian:bg-scandi-accent-primary/10 theme-scandinavian:text-scandi-accent-primary px-2 py-1 rounded transition-all duration-500"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          </motion.div>
-        ))}
+      {/* Placeholder container - Centered */}
+      <div className="flex-grow flex items-center justify-center overflow-y-auto p-4">
+        {/* Styled placeholder text */}
+        <p className="text-xl md:text-2xl theme-gradient-text italic text-center max-w-lg">
+          My reflections on technology, projects, and learning will be shared here soon. Stay tuned!
+        </p>
       </div>
     </motion.div>
   );
