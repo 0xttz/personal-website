@@ -43,7 +43,7 @@ const otherProjectsData: SmallProject[] = [
     description: 'One of the first full-stack applications I built. It allows users to write journal entries with rich text editing, manage tags and moods, and utilizes simple AI features powered by the Anthropic API for sentiment analysis, automatic tag suggestions, and title generation.', 
     imagePath: tei1, // Replace with actual import variable
     imagePath2: tei2, // Replace with actual import variable
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Anthropic API', 'JWT', 'Rich Text Editor'] 
+    tech: ['Svelte', 'Python', 'Flask', 'Supabase', 'Anthropic API'] 
   },
   { 
     id: 'projC', 
@@ -103,10 +103,10 @@ const OtherProjects: React.FC = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-theme-background/70 backdrop-blur-sm z-0"></div>
 
-      {/* Content */}
-      <article className="relative z-10 w-full max-w-4xl mx-auto pt-16 pb-12 px-4 sm:px-6">
-        {/* Back Button */}
-        <div className="absolute top-4 left-4 z-30">
+      {/* Full Width Header Container */}
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 pt-16 pb-8">
+        {/* Back Button - Positioned within full-width header */}
+        <div className="absolute top-4 left-4 sm:left-6 md:left-8 z-30"> {/* Adjusted left positioning */}
           <button 
             onClick={() => navigate('/projects')}
             className="flex items-center gap-2 text-theme-secondary hover:text-accent-primary hover:theme-scandinavian:text-scandi-accent-primary transition-colors group"
@@ -124,15 +124,18 @@ const OtherProjects: React.FC = () => {
           </button>
         </div>
 
-        {/* Page Header */}
-        <header className="mb-12 border-b border-theme pb-8">
+        {/* Page Header Content - Removed max-width constraint */}
+        <header className="w-full border-b border-theme pb-8"> 
           <h1 className={`${HeadingStyles.h1} lowercase mb-2`}>Other Projects</h1>
           <p className={`${HeadingStyles.subtitle}`}>
             A collection of smaller projects, proofs-of-concept, and university work demonstrating various skills and technologies.
           </p>
         </header>
+      </div>
 
-        {/* Project Sections - Refined Layouts */}
+      {/* Constrained Content Area */}
+      <article className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pb-12"> {/* Removed pt-16, kept pb-12 */}
+        {/* Project Sections */}
         <div className="space-y-16 md:space-y-20">
           {otherProjectsData.map((project, index) => {
             return (
