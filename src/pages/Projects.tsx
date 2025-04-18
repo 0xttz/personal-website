@@ -8,22 +8,22 @@ const projectsBgUrl = 'src/assets/projects.png';
 // Updated project data for the main projects page
 const mainProjectsData = [
   {
-    id: "project1",
-    title: "SAP BTP RAG Playground",
-    description: "Full stack RAG application built on SAP Business Technology Platform with AI Core and HANA DB for efficient document processing and retrieval.",
-    tech: ["Python", "React", "SAP BTP", "AI Core", "HANA DB"],
-    link: "/projects/project1", // Keep specific link if needed, or remove if handled elsewhere
-    size: "large", // Indicates it's one of the two main projects
+    id: "ai-playground",
+    title: "GenAI Playground with RAG",
+    description: "Secure, enterprise-ready GenAI playground on SAP BTP. Features RAG via HANA Cloud Vector Engine, multi-LLM support (GPT-4o, Claude 3.7, Gemini) through AI Core, and real-time updates via WebSockets.",
+    tech: ["Python", "Flask", "React", "TypeScript", "SAP BTP", "AI Core", "HANA DB Vector", "Socket.IO"],
+    link: "/projects/ai-playground",
+    size: "large",
     imagePath: "src/assets/projects/rag1.png",
   },
   {
     id: "project2",
     title: "Data Transformation Platform",
-    description: "Automated data processing solution using LangGraph that saves hundreds of hours of manual data transformation in my department at SAP.",
-    tech: ["Python", "LangGraph", "SAP BTP", "AI Services"],
-    link: "/projects/project2", // Keep specific link if needed, or remove if handled elsewhere
-    size: "large", // Indicates it's one of the two main projects
-    imagePath: "src/assets/projects/data-transform1.png", // Assuming an image exists or will be added
+    description: "Automated Proof Point extraction & Value Driver mapping at SAP using LangGraph & AI. Processes 60k+ vectors in HANA DB, saving an estimated 300-400 hours/year with Human-in-the-Loop validation.",
+    tech: ["Python", "LangGraph", "SAP BTP", "AI Services", "HANA DB Vector"],
+    link: "/projects/project2",
+    size: "large",
+    imagePath: "src/assets/projects/data1.png",
   },
   {
     id: "other-projects",
@@ -139,15 +139,15 @@ const Projects: React.FC = () => {
                 </div>
               </div>
             ) : (
-              // Other Projects Tile - Added inner overlay for readability
-              <div className={`relative h-full p-3 lg:p-4 flex flex-col justify-center overflow-hidden rounded-lg`}>
-                {/* Increased overlay opacity */}
-                <div className="absolute inset-0 bg-black/15 z-0"></div> 
+              // Other Projects Tile - Align top, adjust text lightness
+              <div className={`relative h-full p-3 lg:p-4 flex flex-col justify-start overflow-hidden rounded-lg`}>
+                {/* Removed the dark overlay */}
                 {/* Content Wrapper */}
                 <div className="relative z-10">
                   <h2 className="text-xl font-semibold theme-gradient-text mb-2">
                     {project.title}
                   </h2>
+                  {/* Changed text color class */}
                   <p className="text-theme-secondary mb-4">{project.description}</p> 
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tech.map(tech => (

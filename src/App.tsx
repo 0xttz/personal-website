@@ -11,6 +11,7 @@ import Thoughts from './pages/Thoughts';
 import Recommendations from './pages/Recommendations';
 import ProjectDetail from './pages/ProjectDetail';
 import ThoughtDetail from './pages/ThoughtDetail';
+import OtherProjects from './pages/OtherProjects';
 import './index.css';
 
 const App: React.FC = () => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:projectId" element={<ProjectDetail />} />
+          <Route path="projects/other" element={<OtherProjects />} />
           <Route path="thoughts" element={<Thoughts />} />
           <Route path="thoughts/:thoughtId" element={<ThoughtDetail />} />
           <Route path="recommendations" element={<Recommendations />} />

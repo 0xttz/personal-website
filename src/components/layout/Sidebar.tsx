@@ -125,7 +125,7 @@ const Sidebar: React.FC = () => {
         ))}
       </div>
       <div className="mb-2 sm:mb-4 flex justify-end">
-        <AtmosphereControl />
+       {/* <AtmosphereControl /> */}
       </div>
     </nav>
   );

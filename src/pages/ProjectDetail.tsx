@@ -8,6 +8,11 @@ import ragImage1 from '../assets/projects/rag1.png';
 import ragImage2 from '../assets/projects/rag2.png';
 import agenticSalesImage1 from '../assets/projects/agentic-sales1.png';
 import agenticSalesImage2 from '../assets/projects/agentic-sales2.png';
+import ragMermaidPng from '../assets/projects/rag_mermaid.png';
+import dataMermaidPng from '../assets/projects/data_mermaid.png';
+import dataImage1 from '../assets/projects/data1.png';
+import dataImage2 from '../assets/projects/data2.png';
+import dataImage3 from '../assets/projects/data3.png';
 
 // Update the project data interface
 interface ProjectData {
@@ -27,6 +32,7 @@ interface ProjectData {
     description: string;
     codeExample?: string;
     imagePath?: string;
+    layout?: string;
   }[];
 }
 
@@ -48,92 +54,135 @@ const implementationSections = [
 
 // Enhanced project data with detailed information
 const projectsData: Record<string, ProjectData> = {
-  'project1': { 
-    title: 'SAP BTP RAG Playground',
-    subtitle: 'A full stack AI chat application with Retrieval-Augmented Generation (RAG) capabilities',
-    period: 'October 2023 - February 2024',
-    overview: 'Developed a comprehensive AI chat application featuring Retrieval Augmented Generation (RAG) capabilities. Built on a modern client-server architecture, the system integrates a React TypeScript frontend with a Python Flask backend, featuring JWT-based authentication, real-time WebSocket communication, advanced document management with vector storage, and flexible AI model integration.',
-    challenge: 'The primary challenge was to design and build a scalable, secure, and robust application capable of handling complex document processing, real-time AI interactions, and efficient retrieval from large datasets within an enterprise environment, specifically leveraging SAP BTP services.',
-    approach: [
-      'Designed a client-server architecture using React/TypeScript for the frontend SPA and Python/Flask for the backend API.',
-      'Implemented real-time communication using WebSockets (Flask-Sock) for streaming AI responses and status updates.',
-      'Secured the application using JWT-based authentication across both REST and WebSocket endpoints.',
-      'Developed a sophisticated RAG pipeline including document ingestion, text extraction (with OCR), chunking, embedding generation, and vector storage/search.',
-      'Integrated external AI services via a dedicated AI Service layer with adapters for multi-model support.',
-      'Utilized a layered service architecture in the backend for modularity and dependency injection (Base, Core, High-Level services).'
-    ],
+  'ai-playground': {
+    title: 'GenAI Playground with Retrieval Augmented Generation',
+    subtitle: 'A secure, enterprise-ready AI playground built on SAP Business Technology Platform (BTP)',
+    period: 'October 2024 - Present (Ongoing)',
+    overview:
+      "A common yet effective way to showcase full-stack development skills is through building an AI playground. Leveraging my access to a global SAP Business Technology Platform (BTP) account through my study job, I undertook this project to create a practical and secure application for my team. The goal was to develop an enterprise-ready environment where business users could utilize generative AI without compromising data privacy, streamlining their workflows. This involved integrating a Python Flask backend, a React TypeScript frontend, and SAP HANA Cloud's Vector Engine for Retrieval Augmented Generation (RAG). As my first major deployment on enterprise-grade infrastructure, navigating SAP BTP and deploying services using Cloud Foundry was a significant learning curve, teaching me invaluable skills in cloud-native application management. A key requirement was ensuring all data processing, including interactions with state-of-the-art models from OpenAI (GPT-4o), Anthropic (Claude 3.7 Sonnet), and Google (Gemini) via SAP AI Core, remained strictly within SAP's infrastructure. Throughout the process, I leveraged Cursor AI to accelerate development cycles and explore implementation patterns efficiently.",
+    challenge: '',
+    approach: [],
     outcomes: [
-      'A fully functional RAG application enabling users to chat with AI models augmented by knowledge from uploaded documents.',
-      'Real-time, streaming responses for chat interactions via WebSockets.',
-      'Robust document management system with background processing for ingestion, chunking, and embedding.',
-      'Secure user authentication and data isolation.',
-      'Modular and scalable backend architecture ready for extension.',
-      'Intuitive frontend interface for chat, document management, and RAG configuration.'
+      'Delivered a functional and secure GenAI playground deployed on SAP BTP.',
+      'Enabled users to upload documents and chat with AI models using RAG for context-aware responses.',
+      'Implemented real-time feedback for document processing status and streaming AI responses via WebSockets.',
+      'Ensured enterprise-grade data security and privacy by confining all data and AI processing within SAP BTP.',
+      'Provided a streamlined and accessible workflow for business users to leverage generative AI.',
+      'Established a foundation for ongoing development and feature enhancement.'
     ],
     technologies: [
-      'Python', 'Flask', 'Flask-Sock', 'Flask-JWT-Extended', 
-      'React', 'TypeScript', 'TailwindCSS', 'React Router', 'React Query', 
-      'WebSocket', 'JWT', 'LangChain', 'Vector Database', 'Docker', 
-      'SAP BTP', 'AI Core'
+      // Backend
+      'Python', 'Flask', 'Socket.IO', 'ASGI', 'Asyncio', 'Flask-JWT-Extended',
+      // Frontend
+      'React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Router v7', 'Zustand', 'TanStack Query v5', 'Socket.IO Client', 'Headless UI', 'Framer Motion',
+      // SAP BTP & AI
+      'SAP BTP', 'Cloud Foundry', 'SAP AI Core', 'SAP HANA Cloud Vector Engine',
+      // LLMs
+      'OpenAI API', 'Claude API', 'Gemini API',
+      // General
+      'JWT (RS256)', 'REST API', 'WebSockets',
     ],
-    architectureDescription: 'The application employs a multi-faceted architecture:',
+    architectureDescription: 'The application follows a robust client-server model tailored for SAP BTP:',
     architecturePoints: [
-      'Client-Server: React SPA communicating with a Python Flask backend via REST APIs and WebSockets.',
-      'RAG System: Dedicated pipeline for document processing, vector embedding/storage, and context retrieval.',
-      'WebSocket System: Handles real-time bidirectional communication for chat and status updates with message queuing.',
-      'AI Integration: Modular service layer interfacing with external AI models, supporting streaming and context injection.',
-      'Layered Backend: Services organized into Base, Core, and High-Level tiers for clear separation of concerns.'
+      'Backend (Flask/Python): Manages business logic, data persistence (HANA Vector Engine), AI interactions (via AI Core), JWT authentication, and real-time WebSocket communication.',
+      'Frontend (React/TypeScript): Modern SPA providing the UI, interacting with the backend via REST API and WebSockets. Uses Zustand and TanStack Query for state management.',
+      'Real-time Layer (Socket.IO): Enables bidirectional communication for features like document processing updates and streaming AI responses.',
+      'RAG Pipeline: Handles document upload, chunking, vector embedding, storage in HANA, and retrieval for context augmentation.',
+      'AI Service Integration: Abstracted service layer connects to SAP AI Core, allowing flexible use of different LLMs.',
+      'Deployment: Hosted on SAP BTP, utilizing Cloud Foundry for application runtime and service management.'
     ],
-    roles: ['Lead Developer', 'Architecture Design', 'Integration Testing'],
+    roles: [],
     implementation: [
       {
-        title: "Frontend Architecture",
-        description: "The frontend is a Single Page Application (SPA) built with React and TypeScript, utilizing TailwindCSS for styling. Key components include dedicated pages for chat, document management, and authentication, managed UI components (like Message Bubbles, Document Uploader), Zustand for state management (inferred, common pattern, adjust if different), and specific services for API and WebSocket communication. React Query handles data fetching and caching.",
+        title: "Frontend: React SPA with Modern Tooling",
+        description: "The frontend, built with React 18 and TypeScript using Vite, provides the user interface. While leveraging modern tools like Zustand for state management and TanStack Query for server state synchronization improved developer experience, managing the real-time state updates from WebSockets for document processing and chat streaming proved challenging. This required several rounds of refactoring the state logic and component structure (2-3 times) to achieve a stable and responsive user experience. UI components from Headless UI and animations via Framer Motion contribute to the polished interface.",
         imagePath: ragImage1
       },
       {
-        title: "Backend Architecture",
-        description: "The Python Flask backend exposes RESTful APIs and WebSocket endpoints. It features a layered service architecture (Service Container, Base/Core/High-Level Services) for managing dependencies and logic. Core components include Authentication, Document Processing, RAG operations, AI model interaction (via AICoreService and ModelService), and WebSocket handling. JWT manages authentication.",
+        title: "Backend: Asynchronous Flask API with Services",
+        description: "The Python backend uses Flask with ASGI support to handle asynchronous operations efficiently, crucial for non-blocking AI calls via SAP AI Core and real-time communication through Socket.IO. Integrating these components securely, along with JWT (RS256) authentication across both REST and WebSocket endpoints, presented a significant implementation challenge within the BTP environment. Business logic is modularized into services (Auth, AI, DB, File Handling, etc.) managed by a Service Container.",
         imagePath: ragImage2
       },
       {
-        title: "RAG Pipeline",
-        description: "The RAG system processes uploaded documents through a pipeline: file handling, text extraction (including OCR), chunking, embedding generation (using models from AI Core), and storage in a Vector Database. During queries, user input is embedded, searched against the vector store, and relevant context is retrieved and injected into the prompt sent to the AI model.",
+        title: "RAG with HANA Cloud Vector Engine",
+        description: "The core RAG functionality relies on processing uploaded documents (chunking, embedding) and storing vectors in SAP HANA Cloud's Vector Engine. User queries are embedded, and a similarity search against the vector store retrieves relevant document chunks. This context is then injected into the LLM prompt, enabling the AI to answer questions based on the provided documents.",
       },
       {
-        title: "Real-time Communication",
-        description: "WebSockets facilitate real-time features. The frontend's `WebSocketCore` manages connections and message handling, including queuing during disconnections. The backend's `WebSocketService` handles connection authentication, message routing, and streams AI responses back to the client.",
+        title: "Secure Multi-LLM Access via AI Core",
+        description: "A critical aspect was ensuring secure access to various LLMs (GPT-4o, Claude 3.7 Sonnet, Gemini) without data leaving SAP's infrastructure. This was achieved by routing all AI interactions through SAP AI Core, which acts as a secure gateway. The backend's AI Service module abstracts these interactions.",
       }
     ]
   },
   'project2': {
-    title: 'Data Transformation Platform',
-    subtitle: 'Automating complex data processing workflows',
+    title: 'Data Transformation Platform: Proof Point & Value Driver Automation',
+    subtitle: 'Automating complex customer reference analysis and mapping workflows at SAP',
     period: 'March 2024 - Present',
-    overview: 'Building a data transformation platform that automates hundreds of hours of manual data processing using LangGraph orchestration.',
-    challenge: 'Department analysts were spending 15+ hours per week on repetitive data transformation tasks, with inconsistent results and high error rates.',
+    overview: 'Developed as a working student project at SAP, this application tackles complex and time-intensive data processing flows previously handled manually due to PII concerns and process complexity. It automates the extraction of structured data from customer reference documents (Proof Points) and maps these points to standardized benefit statements (Value Drivers), significantly reducing manual effort while ensuring data quality through Human-in-the-Loop (HITL) validation.',
+    challenge: 'Analysts previously spent over 15 hours weekly on manual processing and mapping of customer references, a process prone to inconsistency and compounded by the need to handle potentially sensitive information. Automating this while maintaining accuracy and allowing expert review was the primary challenge. The goal is to save an estimated 300-400 hours of manual labour annually.',
     approach: [
-      'Designed LangGraph workflows to handle sequential data transformation steps',
-      'Created specialized agents for different processing tasks (extraction, normalization, enrichment)',
-      'Built validation systems to ensure data integrity throughout the pipeline',
-      'Implemented a simple UI for non-technical users to initiate and monitor transformations'
+      'Implemented two core workflows using Python (Flask) and LangGraph for orchestration:',
+      '  - 1. Proof Point Extraction: Downloads PDFs from an input list, uses SAP AI Core (GenAI Hub SDK with Gemini models) for structured data extraction (quotes, metrics, details), and presents results alongside the original source for user validation/correction via a web UI.',
+      '  - 2. Value Driver Mapping: Takes proof point descriptions, generates embeddings via SAP AI Core, performs vector similarity search (Cosine Similarity) against 60k+ pre-populated Value Drivers in SAP HANA Cloud, filters by industry, and presents the top 5 matches for user selection in the UI.',
+      'Leveraged Flask-SocketIO for real-time progress updates during processing.',
+      'Designed interactive React tables (@tanstack/react-table) for efficient HITL validation and selection, incorporating confidence scores to guide user review.',
+      'Utilized SAP HANA Cloud as a vector database for efficient similarity search.',
+      'Ensured secure handling of data and robust backend service architecture.'
     ],
     outcomes: [
-      'Reduced processing time from 15+ hours to under 30 minutes per dataset',
-      'Improved accuracy by 35% compared to manual processing',
-      'Standardized output format across all transformation tasks',
-      'Enabled self-service for business users with minimal technical knowledge'
+      'Developed a functional MVP automating two complex data processing workflows.',
+      'Estimated potential reduction in manual effort by 80-90% for the targeted quarterly exercise.',
+      'Successfully integrated SAP AI Core for advanced data extraction and embedding generation.',
+      'Demonstrated efficient vector search over a large dataset (60k+ vectors) in SAP HANA Cloud.',
+      'Implemented an effective HITL process with validation/selection UIs and confidence scoring.',
+      'Provided real-time feedback to users via WebSockets.',
+      'Initial results using Gemini models are very promising, paving the way for further development and potential production deployment.'
     ],
-    technologies: ['Python', 'LangGraph', 'SAP BTP', 'LLM APIs', 'Pandas', 'Flask', 'React', 'MongoDB'],
-    architectureDescription: 'The platform utilizes a workflow-based architecture:',
+    technologies: [
+      // Backend
+      'Python', 'Flask', 'Flask-SocketIO', 'LangGraph', 'SQLAlchemy', 'hdbcli', 'pandas', 'openpyxl', 'pypdf', 'python-dotenv', 'eventlet / gevent',
+      // Frontend
+      'React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Socket.IO Client', '@tanstack/react-table', 'react-router-dom',
+      // AI/DB
+      'SAP AI Core', 'SAP GenAI Hub SDK', 'SAP HANA Cloud (Vector DB)', 'Gemini API',
+      // General
+      'REST API', 'WebSockets', 'Vector Embeddings', 'Cosine Similarity'
+    ],
+    architectureDescription: 'The application employs a backend/frontend architecture designed for workflow automation, real-time updates, and human-in-the-loop validation:',
     architecturePoints: [
-      'Workflow Engine: LangGraph orchestrating the transformation steps',
-      'Task Nodes: Specialized agents handling specific transformation tasks',
-      'State Management: MongoDB for persistence of intermediate and final results',
-      'Web Interface: React frontend with Flask backend for job submission and monitoring'
+      'Backend (Flask/Python): Orchestrates workflows using LangGraph, handles API requests, manages WebSocket communication (Flask-SocketIO), and encapsulates business logic in services (AI Core interaction, HANA vector search, Excel processing, PDF handling).',
+      'Frontend (React/TypeScript): Provides a dynamic SPA for file upload, progress monitoring, and interactive data validation/selection using TanStack Table and custom components. Communicates with the backend primarily via WebSockets.',
+      'LangGraph Workflow (Proof Point): Defines the stateful graph for sequential PDF downloading, AI-powered data extraction, and data merging.',
+      'Vector Search Workflow (Value Driver): Orchestrates embedding generation (AI Core), similarity search (HANA Cloud), and result presentation for user mapping.',
+      'Real-time Communication (Socket.IO): Enables asynchronous updates from backend processing steps (progress, errors, data readiness) to the frontend UI.',
+      'AI Integration (SAP AI Core): Centralized access point for generative AI model inference (extraction with Gemini) and text embedding generation.',
+      'Vector Database (SAP HANA Cloud): Stores and provides efficient cosine similarity search capabilities for 60k+ Value Driver vectors.'
     ],
-    roles: ['Solution Architect', 'Lead Developer', 'User Testing Coordinator'],
-    implementation: implementationSections
+    roles: [],
+    implementation: [
+      {
+        title: "Backend: Flask, LangGraph & Service Layer",
+        description: "The Python backend uses Flask with Flask-SocketIO for real-time communication. The Proof Point extraction workflow is orchestrated using LangGraph, defining a stateful graph that calls specific backend services (Excel reading, PDF download/processing via PyPDF, AI Core for extraction, data merging). The Value Driver Mapping workflow uses dedicated services for embedding generation (AI Core) and vector search (HANA via SQLAlchemy). SocketIO events trigger workflows and relay progress.",
+        imagePath: dataImage1,
+        layout: 'half'
+      },
+      {
+        title: "Frontend: React SPA with Interactive Tables & WebSockets",
+        description: "Built with React, TypeScript, and Vite, the frontend provides separate UIs for each workflow, managed by React Router. A custom `useWebSocket` hook handles real-time communication for progress, errors, and data readiness events. Key components include file uploaders and interactive tables (`@tanstack/react-table`) for the Human-in-the-Loop steps: validating extracted data (Proof Point) and selecting the correct mapping (Value Driver).",
+        imagePath: dataImage2,
+        layout: 'half'
+      },
+      {
+        title: "AI-Powered Processing & Vector Search",
+        description: "SAP AI Core serves as the central hub for AI interactions. It's used to call Gemini models via the GenAI Hub SDK for structured data extraction from PDFs based on defined prompts. It also provides the text embedding service used in the Value Driver workflow. SAP HANA Cloud, accessed via SQLAlchemy, acts as the vector database, enabling efficient cosine similarity searches across 60k+ Value Driver vectors, filtered by industry, to find relevant matches for user proof points.",
+        layout: 'full'
+      },
+      {
+        title: "Human-in-the-Loop (HITL) Design",
+        description: "To ensure accuracy despite automation, HITL is integrated at critical stages. For Proof Points, extracted data is presented in an editable table where users can make corrections, guided by confidence scores highlighted in the UI. For Value Drivers, the system presents the top 5 potential matches based on vector similarity, allowing the user to make the final selection or indicate \"No Match\", leveraging both AI suggestions and human expertise.",
+        imagePath: dataImage3,
+        layout: 'full'
+      }
+    ]
   },
   'project3': {
     title: 'Agentic Sales Deck Generator (POC)',
@@ -344,38 +393,47 @@ const ProjectDetail: React.FC = () => {
           </div>
         </header>
 
-        {/* Project Overview */}
+        {/* Project Overview Text/Points */}
         <section className="mb-16">
           <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Overview</h2>
+          {/* Grid for Overview Text and RAG Diagram (if applicable) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              {/* Overview Text */}
-              {projectId === 'project1' && (
-                  <>
-                    <p className="text-lg leading-relaxed mb-4">
-                      Working on this project presented a unique opportunity to blend cutting-edge AI technologies with practical business requirements. The implementation leveraged the robust infrastructure provided by SAP BTP while addressing real enterprise needs for secure and efficient document processing.
-                    </p>
-                    <p className="text-lg leading-relaxed">
-                      The resulting system balances performance and usability, giving users powerful RAG capabilities without requiring in-depth AI knowledge. This approach has proven particularly valuable for teams dealing with large volumes of technical documentation and knowledge management challenges.
-                    </p>
-                  </>
-               )}
-               {projectId === 'project3' && (
-                    <p className="text-lg leading-relaxed mb-4">
-                        This Proof of Concept explored the automation potential of agentic workflows using LangGraph. By chaining together specialized AI agents, each leveraging different foundation services like vector search or web research, the system could perform complex analysis tasks autonomously, significantly reducing manual effort.
-                    </p>
-               )}
+            {/* Overview Text Container - Spans 2 cols for project2 */}
+            <div className={`${projectId === 'project2' ? 'md:col-span-2' : ''}`}> 
+              <p className="text-lg leading-relaxed mb-4">
+                {project.overview} 
+              </p>
             </div>
-            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 overflow-hidden p-4 min-h-[450px] flex items-center justify-center">
-              {/* Replace Mermaid diagrams with placeholder for all projects */}
-              <div className="w-full h-full flex items-center justify-center text-theme-secondary italic">
-                [ Architecture Diagram Placeholder ]
+            
+            {/* RAG Diagram / Placeholder Container - Hidden for project2 */}
+            {projectId !== 'project2' && (
+              <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 overflow-hidden flex">
+                {/* RAG Diagram */}
+                {projectId === 'ai-playground' && (
+                  <img src={ragMermaidPng} alt="AI Playground Architecture Diagram" className="w-full h-auto block" />
+                )}
+                {/* Placeholder for other projects */}
+                {projectId !== 'ai-playground' && (
+                   <div className="w-full h-full min-h-[300px] flex items-center justify-center text-theme-secondary italic">
+                    [ Architecture Diagram ]
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Data Transformation Diagram (Full Width - Placed directly after grid for project2) */}
+          {projectId === 'project2' && (
+            <div className="mb-16">
+              <h3 className="text-2xl font-semibold mb-4 theme-gradient-text">Architecture Diagram</h3>
+              <div className="mb-8 bg-theme-card rounded-lg shadow-sm border border-theme/10 overflow-hidden flex">
+                <img src={dataMermaidPng} alt="Data Transformation Architecture Diagram" className="w-full h-auto block" />
               </div>
             </div>
-          </div>
+          )}
           
+          {/* Architecture Description & Points (Common to all) */}
           <p className="text-lg mb-4">{project.architectureDescription}</p>
-          
           <ul className="list-disc list-inside space-y-2 pl-4 mb-8">
             {project.architecturePoints.map((point, index) => (
               <li key={index} className="text-lg">{point}</li>
@@ -383,89 +441,38 @@ const ProjectDetail: React.FC = () => {
           </ul>
         </section>
 
-        {/* Challenge and Approach sections side by side */}
-        <section className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Challenge Box */}
-            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 p-6">
-              <h2 className="text-2xl font-semibold mb-4 theme-gradient-text">The Challenge</h2>
-              <p className="text-lg leading-relaxed mb-4">{project.challenge}</p>
-              
-              {/* Project-specific challenge content */}
-              {projectId === 'project1' && (
-                <p className="text-lg leading-relaxed">
-                  Traditional document search systems couldn't understand document semantics beyond keywords, leading to information silos and inefficient knowledge retrieval. The solution needed to handle various document formats while maintaining enterprise-grade security and providing an intuitive user experience.
-                </p>
-              )}
-              
-              {projectId === 'project3' && (
-                <p className="text-lg leading-relaxed">
-                  The complexity of this challenge was magnified by the need to integrate multiple AI models, conduct real-time web research, maintain contextual awareness across the workflow, and ensure the final output was business-relevant and actionable for sales teams with tight timeframes.
-                </p>
-              )}
-            </div>
-            
-            {/* Approach Box */}
-            <div className="bg-theme-card rounded-lg shadow-sm border border-theme/10 p-6">
-              <h2 className="text-2xl font-semibold mb-4 theme-gradient-text">Our Approach</h2>
-              
-              {/* Project-specific approach content */}
-              {projectId === 'project1' && (
-                <p className="text-lg leading-relaxed mb-4">
-                  We developed a comprehensive RAG solution with a modular architecture that separates concerns between document processing, vector storage, and AI integration. We prioritized real-time communication, secure authentication, and an intuitive UX to ensure both technical excellence and user adoption.
-                </p>
-              )}
-              
-              {projectId === 'project3' && (
-                <p className="text-lg leading-relaxed mb-4">
-                  We designed an event-driven workflow using LangGraph that orchestrates specialized AI agents in a multi-step process. Each step builds on previous insights while leveraging the appropriate foundation service (web research, vector search, AI inference). The system provides real-time progress updates and handles asynchronous, potentially long-running tasks efficiently.
-                </p>
-              )}
-              
-              {/* Generic project approach */}
-              {projectId !== 'project1' && projectId !== 'project3' && (
-                <p className="text-lg leading-relaxed mb-4">
-                  Our solution addressed these challenges through careful architecture design, technology selection, and implementation methodology focused on both immediate needs and long-term maintainability.
-                </p>
-              )}
-              
-              <div className="mt-2">
-                {project.approach.slice(0, 4).map((point, index) => (
-                  <p key={index} className="text-base mb-3">
-                    <span className="font-medium theme-scandinavian:text-scandi-accent-primary text-accent-primary">• </span>
-                    {point}
-                  </p>
-                ))}
-                {project.approach.length > 4 && (
-                  <p className="text-sm italic text-theme-secondary mt-2">
-                    + {project.approach.length - 4} more strategies
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Implementation Details */}
         <section className="mb-16">
           <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Implementation</h2>
-          <div className="space-y-6">
+          <div className="space-y-10"> {/* Increased spacing */}
             {project.implementation.map((section, index) => (
-              <div key={index} className="mb-8">
-                <h3 className="text-xl font-semibold mb-3 theme-scandinavian:text-scandi-accent-primary text-accent-primary">{section.title}</h3>
-                <p className="text-lg leading-relaxed mb-3">{section.description}</p>
-                
-                {section.codeExample && (
-                  <div className="bg-theme-card rounded-lg p-5 my-4 overflow-hidden">
-                    <pre className="text-sm overflow-x-auto">
-                      <code className="font-mono">{section.codeExample}</code>
-                    </pre>
+              <div key={index} className="mb-8 clearfix"> {/* Added clearfix for floats */}
+                {/* Image Container (Floated Left for Half Layout) */}
+                {section.imagePath && section.layout === 'half' && (
+                  <div className={`mt-1 mb-3 md:w-1/2 md:float-left md:mr-6`}>
+                    <img src={section.imagePath} alt={section.title} className={`w-full h-auto rounded-lg shadow-md border border-theme/10`} />
                   </div>
                 )}
 
-                {section.imagePath && (
-                  <div className="mt-4">
-                    <img src={section.imagePath} alt={section.title} className="w-full h-auto rounded-lg" />
+                {/* Text Content Container (Handles Full Width or Beside Floated Image) */}
+                <div className={`${section.layout === 'half' ? 'overflow-hidden' : ''}`}> {/* Use overflow-hidden to contain text next to float */}
+                  <h3 className="text-xl font-semibold mb-3 theme-scandinavian:text-scandi-accent-primary text-accent-primary">{section.title}</h3>
+                  <p className="text-lg leading-relaxed">{section.description}</p>
+                </div>
+
+                {/* Full Width Image (Displayed After Text Content) */}
+                {section.imagePath && section.layout === 'full' && (
+                  <div className={`mt-4 mb-3 w-full clear-both`}> {/* Added clear-both */}
+                    <img src={section.imagePath} alt={section.title} className={`w-full h-auto rounded-lg shadow-md border border-theme/10 max-w-4xl mx-auto`} />
+                  </div>
+                )}
+
+                {/* Code Example (Full Width, Clears Floats) */}
+                {section.codeExample && (
+                  <div className="bg-theme-card rounded-lg p-5 my-4 overflow-hidden clear-both"> 
+                    <pre className="text-sm overflow-x-auto">
+                      <code className="font-mono">{section.codeExample}</code>
+                    </pre>
                   </div>
                 )}
               </div>
@@ -478,7 +485,7 @@ const ProjectDetail: React.FC = () => {
           <h2 className="text-3xl font-semibold mb-6 theme-gradient-text">Results & Impact</h2>
           
           <p className="text-lg leading-relaxed mb-6">
-            The implementation of this solution delivered significant value to the organization and its users. The project exceeded initial expectations in several key areas, providing both immediate benefits and long-term strategic advantages.
+            The project successfully delivered on its core objectives, resulting in the following key outcomes:
           </p>
           
           <div className="mb-8">
@@ -491,7 +498,7 @@ const ProjectDetail: React.FC = () => {
           </div>
           
           <p className="text-lg leading-relaxed">
-            These outcomes represent not just technical achievements, but meaningful business impact that has transformed how the organization operates. The solution continues to evolve as new requirements emerge, built on the solid foundation established by this implementation.
+            These outcomes demonstrate the value delivered by the application. Built on a solid technical foundation, the project continues to evolve to meet emerging requirements.
           </p>
 
           {/* Article footer - styled bottom button like the top one */}

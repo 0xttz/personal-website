@@ -9,17 +9,10 @@ const thoughtsBgUrl = 'src/assets/thoughts.png';
 const thoughtsData = [
   {
     id: 1,
-    title: "Memory Persistence in LLMs",
-    date: "July 26, 2024",
-    summary: "Exploring the challenges and potential solutions for enabling long-term memory in large language models.",
-    tags: ["AI", "LLM", "Memory"],
-  },
-  {
-    id: 2,
-    title: "Vibe Coding as a Business Major",
-    date: "July 25, 2024",
-    summary: "How intuition and \'vibe\' play a role in coding, even from a non-traditional background.",
-    tags: ["Development", "Career", "Intuition"],
+    title: "Abundance of Everything",
+    date: "April 18, 2025",
+    summary: "The abundance of everything is a reality that we must face.",
+    tags: ["Career", "Society"],
   },
   // Add more thoughts here as needed
 ];
@@ -56,7 +49,7 @@ const Thoughts: React.FC = () => {
       style={{
         backgroundImage: `url(${thoughtsBgUrl})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center calc(50% + 70px)',
+        backgroundPosition: 'center calc(50%)',
         backgroundRepeat: 'no-repeat',
       }}
     >
